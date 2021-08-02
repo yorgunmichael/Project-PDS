@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ServerConfiguration {
 
-    private final String configvariable = "CONFIG";
+    private final String configvariable = "CONF";
     private final String locationsystem;
     private ServerProperties configuration;
     private int n;
