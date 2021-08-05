@@ -3,15 +3,16 @@ package client;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.scene.shape.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 import static java.lang.Thread.sleep;
+
 
 
 
@@ -26,15 +27,15 @@ public class Client {
 
         try {
 
-
             configuration = System.getenv(configurationvariable);
             String values = Files.readString(Path.of(configuration));
+          //  String values = Files.readString(Path.of(configuration));
             System.out.println(values);
 
 
             ObjectMapper jmapper = new ObjectMapper(new JsonFactory());
 
-            map = jmapper.readValue(values, new TypeReference<Map<String, Map<String, String>>>() {});
+           map = jmapper.readValue(values, new TypeReference<Map<String, Map<String, String>>>() {});
             sleep(1000);
 
         } catch (IOException e) {
