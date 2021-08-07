@@ -20,19 +20,21 @@ public class BackendService {
 
     private static final Logger logger = LoggerFactory.getLogger(BackendService.class.getName());
 
+
     public static void main(String[] args) throws IOException {
 
         Properties props = new Properties();
-        logger.info(System.getenv("PROJECT"));
-        try (FileInputStream fis = new FileInputStream(System.getenv("PROJECT")+"/pdsconf/conf.properties")) {
+        //logger.info(System.getenv("PROJECT"));
+        try (FileInputStream fis = new FileInputStream("/home/tata/recources/conf.properties")) {
             props.load(fis);
         }
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        mapper.findAndRegisterModules();
-        PropertiesClass yamlProps = mapper.readValue(new File(System.getenv("PROJECT")+"/pdsconf/config.yaml"), PropertiesClass.class);
+        PropertiesClass yamlProps = mapper.readValue(new File("/home/tata/recources/config.yaml"), PropertiesClass.class);
 
-        boolean isInTestMode = yamlProps.isTestMode();
+       // boolean isInTestMode = yamlProps.isTestMode();
         int maxCo = yamlProps.getMaxCo();
+
+
         DataSource ds = new DataSource(maxCo,props);
 
 
@@ -69,7 +71,7 @@ public class BackendService {
 
         String loggerInfo = "BackendService is running.";
         if (cmd.hasOption("testMode")) {
-            isInTestMode = true;
+           // isInTestMode = true;
             loggerInfo += "\n Test mode is on";
         }
         if (cmd.hasOption("maxConnections")) {
@@ -77,9 +79,9 @@ public class BackendService {
             loggerInfo += "\n Max connections has been set to " + maxCo;
 
         }
-        if(!yamlProps.getSqlReq().isEmpty()){
-            executeSqlRequest(ds,yamlProps.getSqlReq());
-        }
+//        if(!yamlProps.getSqlReq().isEmpty()){
+//            executeSqlRequest(ds,yamlProps.getSqlReq());
+//        }
 
         if(cmd.hasOption("sqlReq")){
             String request =cmd.getOptionValue("sqlReq");
@@ -107,6 +109,9 @@ public class BackendService {
             }
         }
         logger.info(loggerInfo);
+        Server server = new Server(new ServerConfiguration(10));
+        server.serverService();
+
 
     }
 

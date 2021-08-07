@@ -2,20 +2,21 @@ package episen.backend.server;
 
 public class PropertiesClass {
 
-    private boolean testMode;
+
     private Integer maxCo;
-    private String sqlReq;
+    private int port;
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
 
     public PropertiesClass() {
     }
 
-    public boolean isTestMode() {
-        return testMode;
-    }
-
-    public void setTestMode(boolean testMode) {
-        this.testMode = testMode;
-    }
 
     public Integer getMaxCo() {
         return maxCo;
@@ -25,11 +26,6 @@ public class PropertiesClass {
         this.maxCo = maxCo;
     }
 
-    public String getSqlReq() {
-        return sqlReq;
-    }
 
-    public void setSqlReq(String sqlReq) {
-        this.sqlReq = sqlReq;
-    }
+
 }

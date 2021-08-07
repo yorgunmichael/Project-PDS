@@ -29,8 +29,14 @@ public class Client {
 
             configuration = System.getenv(configurationvariable);
             String values = Files.readString(Path.of(configuration));
-          //  String values = Files.readString(Path.of(configuration));
             System.out.println(values);
+
+            Socket socket = new Socket(new ClientConfiguration().getConfiguration().getAdressIP(), new ClientConfiguration().getConfiguration().getPort());
+            InputStream in = socket.getInputStream();
+            OutputStream out = socket.getOutputStream();
+            DataInputStream inputData = new DataInputStream(in);
+            DataOutputStream outputData = new DataOutputStream(out);
+            outputData.writeUTF("test" + "@" + "oui");
 
 
             ObjectMapper jmapper = new ObjectMapper(new JsonFactory());
@@ -54,7 +60,6 @@ public class Client {
             Socket socket = new Socket(new ClientConfiguration().getConfiguration().getAdressIP(), new ClientConfiguration().getConfiguration().getPort());
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
-
 
             ObjectMapper objectMapper = new ObjectMapper();
             String data = objectMapper.writeValueAsString(map.get(request));
