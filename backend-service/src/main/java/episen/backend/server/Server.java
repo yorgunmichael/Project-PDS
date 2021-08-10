@@ -39,10 +39,10 @@ public class Server {
 
                 //create a new thread object
                 Connection connection = ds.addData();
-//                ClientHandler clientSocket = new ClientHandler(client, connection);
-//
-//                // This thread will handle the client
-//                new Thread(clientSocket).start();
+                ClientHandler clientSocket = new ClientHandler(client, connection);
+
+                // This thread will handle the client
+                new Thread(clientSocket).start();
 
             }
         } catch (IOException e) {
