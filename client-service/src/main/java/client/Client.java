@@ -1,19 +1,20 @@
 package client;
 
+import MenuInterface.Home;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+
 import static java.lang.Thread.sleep;
-
-
 
 
 public class Client {
@@ -29,20 +30,38 @@ public class Client {
 
             configuration = System.getenv(configurationvariable);
             String values = Files.readString(Path.of(configuration));
-            System.out.println(values);
+            //System.out.println(values);
 
-            Socket socket = new Socket(new ClientConfiguration().getConfiguration().getAdressIP(), new ClientConfiguration().getConfiguration().getPort());
-            InputStream in = socket.getInputStream();
-            OutputStream out = socket.getOutputStream();
-            DataInputStream inputData = new DataInputStream(in);
-            DataOutputStream outputData = new DataOutputStream(out);
-            outputData.writeUTF("test" + "@" + "oui");
+//            Socket socket = new Socket(new ClientConfiguration().getConfiguration().getAdressIP(), new ClientConfiguration().getConfiguration().getPort());
+//            InputStream in = socket.getInputStream();
+//            OutputStream out = socket.getOutputStream();
+//            DataInputStream inputData = new DataInputStream(in);
+//            DataOutputStream outputData = new DataOutputStream(out);
+//            outputData.writeUTF("test" + "@" + "oui");
 
 
             ObjectMapper jmapper = new ObjectMapper(new JsonFactory());
 
-           map = jmapper.readValue(values, new TypeReference<Map<String, Map<String, String>>>() {});
+            map = jmapper.readValue(values, new TypeReference<Map<String, Map<String, String>>>() {
+            });
             sleep(1000);
+
+            try {
+                for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        UIManager.setLookAndFeel(info.getClassName());
+
+                        Home h = new Home();
+                        break;
+                    } else {
+                        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                    }
+                }
+            } catch (Exception e) {
+                // If Nimbus is not available, you can set to another look and feel.
+                // I can't get it to compile or work.
+            }
+
 
         } catch (IOException e) {
             e.printStackTrace();
