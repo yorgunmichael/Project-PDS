@@ -82,6 +82,10 @@
     "id_room" : ""
   },
 
+  "requestGetEquipment" : {
+
+  },
+
 
 
   "rateOccupation" : {},

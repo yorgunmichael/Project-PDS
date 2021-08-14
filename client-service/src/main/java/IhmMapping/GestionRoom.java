@@ -167,10 +167,20 @@ public class GestionRoom extends JPanel implements MouseListener {
     public void mousePressed(MouseEvent e) {
 
         JOptionPane d = new JOptionPane();
-        Object OptionsButtons[] = {"fenêtre", "capteur", "prise", "écran"};
+        map.get("requestGetEquipment");
+        String responses = getSend("requestGetEquipment");
+        String[] ListEquipment = responses.split("@");
+        for (String b : ListEquipment) {
+            if (b.contains("@")) {
+                b.replace("@", "");
+            }
+            System.out.println(b);
+        }
+
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Quel équipement voulez vous placer?");
         panel.add(label);
+
 
 
         BufferedImage currentEquipment;
@@ -186,28 +196,44 @@ public class GestionRoom extends JPanel implements MouseListener {
                 if (b.contains("@")) {
                     b.replace("@", "");
                 }
-                System.out.println(b);
             }
 
 
-
             if (!answers[0].contains("t")) {
-                //int responsePrise = JOptionPane.showConfirmDialog(null, " Voulez vous placer une fenetre?");
-                int responsePrise = JOptionPane.showOptionDialog(null, panel, "Choix d'équipements", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, OptionsButtons, OptionsButtons[0]);
-                if (responsePrise == JOptionPane.YES_OPTION) {
+
+                String responsePrise =
+                        (String)JOptionPane.showInputDialog(null,
+                        "Veuillez indiquer votre équipement",
+                        "Choix d'équipements",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        ListEquipment,
+                        ListEquipment[0]);
+                System.out.println((String) responsePrise);
+
+                switch (responsePrise) {
+                    case "fenêtre":
+                         mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
+                        break;
+                    case "capteur":
+                        mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
+                        break;
+                    case "prise":
+                        mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
+                        break;
+                    case "écran":
+                        mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                        break;
+                    default:
+                        break;
+                }
 
 
-                    String valueChoose = "1";
-                    map.get("requestUpdateWindows").put("value", valueChoose);
-                    map.get("requestUpdateWindows").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdateWindows");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
+                if (responsePrise.equals("fenêtre") | responsePrise.equals("capteur") | responsePrise.equals("prise") | responsePrise.equals("écran")) {
+
+
+
+
 
                     try {
                         currentEquipment = ImageIO.read(mapUrl);
@@ -217,10 +243,9 @@ public class GestionRoom extends JPanel implements MouseListener {
                     }
 
 
-
                 }
             } else {
-                int responseScreen = JOptionPane.showConfirmDialog(null, "Voulez vous supprimer la fenetre?");
+                int responseScreen = JOptionPane.showConfirmDialog(null, "Voulez vous supprimer l'équipement?");
                 if (responseScreen == JOptionPane.YES_OPTION) {
 
 
@@ -250,87 +275,6 @@ public class GestionRoom extends JPanel implements MouseListener {
 
         }
 
-        //***********************************
-
-
-        URL mapUrl22 = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
-        if (e.getX() >= 625 & e.getX() <= 675 & e.getY() >= 220 & e.getY() <= 270) {
-
-            String id_room = WindowsMapping.getId_room();
-
-            map.get("requestWindowsIsEmpty").put("id_room", id_room);
-            String requestWindowsIsEmpty = getSend("requestWindowsIsEmpty");
-            String[] answers = requestWindowsIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                System.out.println(b);
-            }
-
-            if (!answers[0].contains("t")) {
-                //int responsePrise = JOptionPane.showConfirmDialog(null, " Voulez vous placer une fenetre?");
-                int responsePrise = JOptionPane.showOptionDialog(null, panel, "Choix d'équipements", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, OptionsButtons, OptionsButtons[0]);
-                if (responsePrise == JOptionPane.NO_OPTION) {
-
-
-                    String valueChoose = "1";
-                    map.get("requestUpdateWindows").put("value", valueChoose);
-                    map.get("requestUpdateWindows").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdateWindows");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
-
-                    try {
-                        currentEquipment = ImageIO.read(mapUrl22);
-                        getGraphics().drawImage(currentEquipment, 625, 220, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-
-
-
-                }
-            } else {
-                int responseScreen = JOptionPane.showConfirmDialog(null, "Voulez vous supprimer le capteur?");
-                if (responseScreen == JOptionPane.YES_OPTION) {
-
-
-                    String valueChoose = "0";
-                    map.get("requestUpdateWindows").put("value", valueChoose);
-                    map.get("requestUpdateWindows").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdateWindows");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
-
-
-                    try {
-                        URL imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-                        currentEquipment = ImageIO.read(imgURL);
-                        getGraphics().clearRect(625, 220, 50, 50);
-                        getGraphics().drawImage(currentEquipment, 625, 220, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }
-            }
-
-        }
-
-
-
-
-        //*******************
 
         URL mapUrl2 = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
         if (e.getX() >= 236 & e.getX() <= 286 & e.getY() >= 189 & e.getY() <= 239) {

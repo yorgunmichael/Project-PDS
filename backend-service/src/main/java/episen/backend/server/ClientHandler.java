@@ -117,6 +117,11 @@ public class ClientHandler implements Runnable {
                 ds.writeUTF(requestWindowsIsEmpty(connection, map).toString());
             }
 
+            if (request.split("@")[0].equals("requestGetEquipment")) {
+                ds.writeUTF(requestGetEquipment(connection, map).toString());
+            }
+
+
 /******************************************starting condition for indicators***********************/
 
             /*****************his the start of general information of the indicators***************/
@@ -960,6 +965,28 @@ public class ClientHandler implements Runnable {
         }
         return sb;
     }
+
+    public StringBuilder requestGetEquipment(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "SELECT name_equipment FROM equipment" +
+                    "    WHERE availablity = TRUE";
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+            System.out.println(sql);
+            sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append(rs.getString(1) + "@");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+
 
     // LOCATION
 
