@@ -177,7 +177,6 @@ public class WindowsMapping extends JFrame {
                     cardLayout.show(panels, "panelRoom");
                     frame.repaint();
 
-
                 }
 
             }

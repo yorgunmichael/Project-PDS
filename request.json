@@ -83,7 +83,18 @@
   },
 
   "requestGetEquipment" : {
+  },
 
+  "requestUpdateEquipment" : {
+    "id_localisation" : "",
+    "name_equipment" : "",
+    "availablity": ""
+  },
+
+  "requestGetLocalisation" : {
+    "id_room" : "",
+    "positionX" : "",
+    "positionY": ""
   },
 
 

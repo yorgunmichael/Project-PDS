@@ -182,7 +182,6 @@ public class GestionRoom extends JPanel implements MouseListener {
         panel.add(label);
 
 
-
         BufferedImage currentEquipment;
         URL mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
         if (e.getX() >= 625 & e.getX() <= 675 & e.getY() >= 220 & e.getY() <= 270) {
@@ -201,37 +200,58 @@ public class GestionRoom extends JPanel implements MouseListener {
 
             if (!answers[0].contains("t")) {
 
-                String responsePrise =
-                        (String)JOptionPane.showInputDialog(null,
-                        "Veuillez indiquer votre équipement",
-                        "Choix d'équipements",
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        ListEquipment,
-                        ListEquipment[0]);
-                System.out.println((String) responsePrise);
+                String name_equipment =
+                        (String) JOptionPane.showInputDialog(null,
+                                "Veuillez indiquer votre équipement",
+                                "Choix d'équipements",
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                ListEquipment,
+                                ListEquipment[0]);
+                System.out.println((String) name_equipment);
 
-                switch (responsePrise) {
-                    case "fenêtre":
-                         mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
-                        break;
-                    case "capteur":
-                        mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
-                        break;
-                    case "prise":
-                        mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
-                        break;
-                    case "écran":
-                        mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
-                        break;
-                    default:
-                        break;
+
+                if (name_equipment.contains("fenêtre")) {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
+                }
+                if (name_equipment.contains("capteur")) {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
+                }
+                if (name_equipment.contains("prise")) {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
+                }
+                if (name_equipment.contains("écran")) {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
                 }
 
 
-                if (responsePrise.equals("fenêtre") | responsePrise.equals("capteur") | responsePrise.equals("prise") | responsePrise.equals("écran")) {
+                if (name_equipment.contains("fenêtre") | name_equipment.contains("capteur") | name_equipment.contains("prise") | name_equipment.contains("écran")) {
+
+                    map.get("requestGetLocalisation").put("id_room", id_room);
+                    map.get("requestGetLocalisation").put("positionX", "625");
+                    map.get("requestGetLocalisation").put("positionY", "225");
+                    String requestGetLocalisation = getSend("requestGetLocalisation");
+                    String[] answersLocalisation = requestGetLocalisation.split("@");
+                    for (String b : answersLocalisation) {
+                        if (b.contains("@")) {
+                            b.replace("@", "");
+                        }
+                    }
 
 
+                    String id_localisation = answersLocalisation[0];
+                    String availablity = "false";
+
+                    map.get("requestUpdateEquipment").put("id_localisation", id_localisation);
+                    map.get("requestUpdateEquipment").put("availablity", availablity);
+                    map.get("requestUpdateEquipment").put("name_equipment", name_equipment);
+                    String requestUpdateEquipment = getSend("requestUpdateEquipment");
+                    String[] answersUpdate = requestUpdateEquipment.split("@");
+                    for (String b : answersUpdate) {
+                        if (b.contains("@")) {
+                            b.replace("@", "");
+                        }
+                    }
 
 
 
@@ -361,8 +381,8 @@ public class GestionRoom extends JPanel implements MouseListener {
             }
 
             if (!answers[0].contains("t")) {
-                int responsePrise = JOptionPane.showConfirmDialog(null, " Voulez vous placer une prise?");
-                if (responsePrise == JOptionPane.YES_OPTION) {
+                int name_equipment = JOptionPane.showConfirmDialog(null, " Voulez vous placer une prise?");
+                if (name_equipment == JOptionPane.YES_OPTION) {
 
 
                     String valueChoose = "1";

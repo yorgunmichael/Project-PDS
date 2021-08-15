@@ -121,6 +121,16 @@ public class ClientHandler implements Runnable {
                 ds.writeUTF(requestGetEquipment(connection, map).toString());
             }
 
+            if (request.split("@")[0].equals("requestUpdateEquipment")) {
+                ds.writeUTF(requestUpdateEquipment(connection, map).toString());
+            }
+
+            if (request.split("@")[0].equals("requestGetLocalisation")) {
+                ds.writeUTF(requestGetLocalisation(connection, map).toString());
+            }
+
+
+
 
 /******************************************starting condition for indicators***********************/
 
@@ -975,6 +985,50 @@ public class ClientHandler implements Runnable {
                     "    WHERE availablity = TRUE";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             System.out.println(sql);
+            sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append(rs.getString(1) + "@");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestUpdateEquipment(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "UPDATE equipment" +
+                    " set availablity = "+map.get("availablity") +", id_localisation = "+map.get("id_localisation") +"" +
+                    " WHERE name_equipment = '"+map.get("name_equipment") +"'" ;
+
+
+            connection.createStatement().executeUpdate(sql);
+            System.out.println(sql);
+            sb = new StringBuilder();
+            sb.append("Update done");
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestGetLocalisation(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "SELECT id_localisation" +
+                    " FROM localisation " +
+                    "WHERE id_room = "+map.get("id_room")+" "+" AND position_x = "+map.get("positionX")+" "+" AND position_y = "+map.get("positionY")+"";
+            System.out.println(sql);
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+
             sb = new StringBuilder();
             while (rs.next()) {
                 sb.append(rs.getString(1) + "@");
