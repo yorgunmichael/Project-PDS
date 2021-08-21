@@ -128,6 +128,16 @@ public class ClientHandler implements Runnable {
             if (request.split("@")[0].equals("requestGetLocalisation")) {
                 ds.writeUTF(requestGetLocalisation(connection, map).toString());
             }
+            if (request.split("@")[0].equals("requestUpdateStatus")) {
+                ds.writeUTF(requestUpdateStatus(connection, map).toString());
+            }
+            if (request.split("@")[0].equals("requestVerifyStatus")) {
+                ds.writeUTF(requestVerifyStatus(connection, map).toString());
+            }
+            if (request.split("@")[0].equals("requestGetNameEquipment")) {
+                ds.writeUTF(requestGetNameEquipment(connection, map).toString());
+            }
+
 
 
 
@@ -233,6 +243,7 @@ public class ClientHandler implements Runnable {
             if (request.split("@")[0].equals("insertCompany")) {
                 ds.writeUTF(insertCompany(connection, map).toString());
             }
+
 
 
 
@@ -1026,6 +1037,92 @@ public class ClientHandler implements Runnable {
             String sql = "SELECT id_localisation" +
                     " FROM localisation " +
                     "WHERE id_room = "+map.get("id_room")+" "+" AND position_x = "+map.get("positionX")+" "+" AND position_y = "+map.get("positionY")+"";
+            System.out.println(sql);
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+
+            sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append(rs.getString(1) + "@");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestUpdateStatus(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "UPDATE localisation" +
+                    " set empty = "+map.get("empty") +
+                    " WHERE id_localisation = "+map.get("id_localisation")  ;
+
+
+            connection.createStatement().executeUpdate(sql);
+            System.out.println(sql);
+            sb = new StringBuilder();
+            sb.append("Update done");
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestVerifyStatus(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "SELECT empty FROM localisation" +
+                    "    WHERE id_localisation = '" + map.get("id_localisation") + "'";
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+            System.out.println(sql);
+            sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append(rs.getString(1) + "@");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestGetNameEquipment(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "SELECT name_equipment" +
+                    " FROM equipment " +
+                    "WHERE id_localisation = "+map.get("id_localisation");
+            System.out.println(sql);
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+
+            sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append(rs.getString(1) + "@");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestEquipment(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "SELECT name_equipment" +
+                    " FROM equipment " +
+                    "WHERE id_localisation = "+map.get("id_localisation");
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 

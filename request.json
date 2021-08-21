@@ -97,6 +97,23 @@
     "positionY": ""
   },
 
+  "requestUpdateStatus" : {
+    "id_localisation" : "",
+    "empty" : ""
+  },
+
+  "requestVerifyStatus" : {
+    "id_localisation" : ""
+  },
+
+  "requestGetNameEquipment" : {
+    "id_localisation" : ""
+  },
+
+  "requestEquipment" : {
+    "id_localisation" : ""
+  },
+
 
 
   "rateOccupation" : {},
