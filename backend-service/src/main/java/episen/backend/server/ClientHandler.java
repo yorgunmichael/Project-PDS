@@ -137,6 +137,9 @@ public class ClientHandler implements Runnable {
             if (request.split("@")[0].equals("requestGetNameEquipment")) {
                 ds.writeUTF(requestGetNameEquipment(connection, map).toString());
             }
+            if (request.split("@")[0].equals("requestEquipment")) {
+                ds.writeUTF(requestEquipment(connection, map).toString());
+            }
 
 
 

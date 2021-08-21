@@ -30,15 +30,15 @@ public class Gestion extends JPanel implements MouseListener {
             e.printStackTrace();
         }
 
-        drawScreenPosition(g);
-        drawPrisePosition(g);
-        drawSensorPosition(g);
-        drawWindowsPosition(g);
+        drawPosition1(g);
+        drawPosition2(g);
+        drawPosition4(g);
+        drawPosition3(g);
 
 
     }
 
-    public void drawScreenPosition(Graphics g) {
+    public void drawPosition1(Graphics g) {
         URL imgURL;
         BufferedImage currentEquipment;
         try {
@@ -73,7 +73,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
     }
 
-    public void drawPrisePosition(Graphics g) {
+    public void drawPosition2(Graphics g) {
         URL imgURL;
         BufferedImage currentEquipment;
 
@@ -102,7 +102,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
     }
 
-    public void drawSensorPosition(Graphics g) {
+    public void drawPosition4(Graphics g) {
         URL imgURL;
         BufferedImage currentEquipment;
 
@@ -132,7 +132,7 @@ public class Gestion extends JPanel implements MouseListener {
 
     }
 
-    public void drawWindowsPosition(Graphics g) {
+    public void drawPosition3(Graphics g) {
         URL imgURL;
         BufferedImage currentEquipment;
 

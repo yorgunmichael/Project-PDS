@@ -30,16 +30,15 @@ public class GestionRoom extends JPanel implements MouseListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        drawPositions(g);
-        drawPrisePosition(g);
-        drawSensorPosition(g);
-        drawWindowsPosition(g);
+        drawPosition1(g);
+        drawPosition2(g);
+        drawPosition4(g);
+        drawPosition3(g);
 
 
     }
 
-
-    public void drawPositions(Graphics g) {
+    private void drawEquipment(String x, String y, Graphics g) {
         URL imgURL;
         BufferedImage currentEquipment;
 
@@ -47,8 +46,8 @@ public class GestionRoom extends JPanel implements MouseListener {
             String id_room = WindowsMapping.getId_room();
 
             map.get("requestGetLocalisation").put("id_room", id_room);
-            map.get("requestGetLocalisation").put("positionX", "111");
-            map.get("requestGetLocalisation").put("positionY", "430");
+            map.get("requestGetLocalisation").put("positionX", x);
+            map.get("requestGetLocalisation").put("positionY", y);
             String requestGetLocalisation = getSend("requestGetLocalisation");
             String[] answersLocalisation = requestGetLocalisation.split("@");
             for (String b : answersLocalisation) {
@@ -60,8 +59,8 @@ public class GestionRoom extends JPanel implements MouseListener {
             String id_localisation = answersLocalisation[0];
 
             map.get("requestVerifyStatus").put("id_localisation", id_localisation);
-            String responseScreenIsEmpty = getSend("requestScreenIsEmpty");
-            String[] answers = responseScreenIsEmpty.split("@");
+            String requestVerifyStatus = getSend("requestVerifyStatus");
+            String[] answers = requestVerifyStatus.split("@");
             for (String b : answers) {
                 if (b.contains("@")) {
                     b.replace("@", "");
@@ -71,10 +70,31 @@ public class GestionRoom extends JPanel implements MouseListener {
             if (answers[0].contains("t")) {
                 imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
             } else {
+                map.get("requestEquipment").put("id_localisation", id_localisation);
+                String requestEquipment = getSend("requestEquipment");
+                String[] answersrequestEquipment = requestEquipment.split("@");
+                for (String b : answersrequestEquipment) {
+                    if (b.contains("@")) {
+                        b.replace("@", "");
+                    }
+                }
+                String name_equipment = answersrequestEquipment[0];
+
                 imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+
+                if (name_equipment.contains("fenêtre")) {
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
+                } else if (name_equipment.contains("capteur")) {
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
+                } else if (name_equipment.contains("prise")) {
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
+                } else if (name_equipment.contains("écran")) {
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                }
+
             }
             currentEquipment = ImageIO.read(imgURL);
-            g.drawImage(currentEquipment, 111, 430, 50, 50, null);
+            g.drawImage(currentEquipment, Integer.valueOf(x), Integer.valueOf(y), 50, 50, null);
 
 
         } catch (Exception e) {
@@ -82,92 +102,20 @@ public class GestionRoom extends JPanel implements MouseListener {
         }
     }
 
-    public void drawPrisePosition(Graphics g) {
-        URL imgURL;
-        BufferedImage currentEquipment;
-
-        try {
-            String id_room = WindowsMapping.getId_room();
-            map.get("requestPriseIsEmpty").put("id_room", id_room);
-            String responsePriseIsEmpty = getSend("requestPriseIsEmpty");
-            String[] answers = responsePriseIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                System.out.println(b);
-            }
-            if (!answers[0].contains("t")) {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-            } else {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
-            }
-            currentEquipment = ImageIO.read(imgURL);
-            g.drawImage(currentEquipment, 557, 560, 50, 50, null);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public void drawPosition1(Graphics g) {
+        drawEquipment("111", "430", g);
     }
 
-    public void drawWindowsPosition(Graphics g) {
-        URL imgURL;
-        BufferedImage currentEquipment;
-
-        try {
-            String id_room = WindowsMapping.getId_room();
-            map.get("requestWindowsIsEmpty").put("id_room", id_room);
-            String requestWindowsIsEmpty = getSend("requestWindowsIsEmpty");
-            String[] answers = requestWindowsIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                System.out.println(b);
-            }
-            if (!answers[0].contains("t")) {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-            } else {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
-            }
-            currentEquipment = ImageIO.read(imgURL);
-            g.drawImage(currentEquipment, 625, 220, 50, 50, null);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void drawPosition2(Graphics g) {
+        drawEquipment("625", "220", g);
     }
 
-    public void drawSensorPosition(Graphics g) {
-        URL imgURL;
-        BufferedImage currentEquipment;
+    public void drawPosition3(Graphics g) {
+        drawEquipment("236", "189", g);
+    }
 
-        try {
-            String id_room = WindowsMapping.getId_room();
-            map.get("requestSensorIsEmpty").put("id_room", id_room);
-            String requestSensorIsEmpty = getSend("requestSensorIsEmpty");
-            String[] answers = requestSensorIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                System.out.println(b);
-            }
-            if (!answers[0].contains("t")) {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-            } else {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
-            }
-            currentEquipment = ImageIO.read(imgURL);
-            g.drawImage(currentEquipment, 236, 189, 50, 50, null);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void drawPosition4(Graphics g) {
+        drawEquipment("557", "560", g);
     }
 
 
@@ -254,14 +202,11 @@ public class GestionRoom extends JPanel implements MouseListener {
 
             if (name_equipment.contains("fenêtre")) {
                 mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
-            }
-            if (name_equipment.contains("capteur")) {
+            } else if (name_equipment.contains("capteur")) {
                 mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
-            }
-            if (name_equipment.contains("prise")) {
+            } else if (name_equipment.contains("prise")) {
                 mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
-            }
-            if (name_equipment.contains("écran")) {
+            } else if (name_equipment.contains("écran")) {
                 mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
             }
 
