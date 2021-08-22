@@ -34,131 +34,86 @@ public class Gestion extends JPanel implements MouseListener {
         drawPosition2(g);
         drawPosition4(g);
         drawPosition3(g);
+    }
+
+    private void drawEquipment(String x, String y, Graphics g) {
+        URL imgURL;
+        BufferedImage currentEquipment;
+
+        try {
+            String id_room = WindowsMapping.getId_room();
+
+            map.get("requestGetLocalisation").put("id_room", id_room);
+            map.get("requestGetLocalisation").put("positionX", x);
+            map.get("requestGetLocalisation").put("positionY", y);
+            String requestGetLocalisation = getSend("requestGetLocalisation");
+            String[] answersLocalisation = requestGetLocalisation.split("@");
+            for (String b : answersLocalisation) {
+                if (b.contains("@")) {
+                    b.replace("@", "");
+                }
+            }
+
+            String id_localisation = answersLocalisation[0];
+
+            map.get("requestVerifyStatus").put("id_localisation", id_localisation);
+            String requestVerifyStatus = getSend("requestVerifyStatus");
+            String[] answers = requestVerifyStatus.split("@");
+            for (String b : answers) {
+                if (b.contains("@")) {
+                    b.replace("@", "");
+                }
+                System.out.println(b);
+            }
+            if (answers[0].contains("t")) {
+                imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
+            } else {
+                map.get("requestEquipment").put("id_localisation", id_localisation);
+                String requestEquipment = getSend("requestEquipment");
+                String[] answersrequestEquipment = requestEquipment.split("@");
+                for (String b : answersrequestEquipment) {
+                    if (b.contains("@")) {
+                        b.replace("@", "");
+                    }
+                }
+                String name_equipment = answersrequestEquipment[0];
+
+                imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+
+                if (name_equipment.contains("fenêtre")) {
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
+                } else if (name_equipment.contains("capteur")) {
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
+                } else if (name_equipment.contains("prise")) {
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
+                } else if (name_equipment.contains("écran")) {
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                }
+
+            }
+            currentEquipment = ImageIO.read(imgURL);
+            g.drawImage(currentEquipment, Integer.valueOf(x), Integer.valueOf(y), 50, 50, null);
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void drawPosition1(Graphics g) {
-        URL imgURL;
-        BufferedImage currentEquipment;
-        try {
-
-            String id_room = WindowsMapping.getId_room();
-
-            map.get("requestScreenIsEmpty").put("id_room", id_room);
-            String responseScreenIsEmpty = getSend("requestScreenIsEmpty");
-            String[] answers = responseScreenIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-            }
-
-            if (!answers[0].contains("t")) {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-            } else {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
-            }
-            currentEquipment = ImageIO.read(imgURL);
-            g.drawImage(currentEquipment, 195, 460, 50, 50, null);
-
-//            imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-//            currentEquipment = ImageIO.read(imgURL);
-//
-//            g.drawImage(currentEquipment, 550, 549, 50, 50, null);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        drawEquipment("195", "460", g);
     }
 
     public void drawPosition2(Graphics g) {
-        URL imgURL;
-        BufferedImage currentEquipment;
-
-        try {
-            String id_room = WindowsMapping.getId_room();
-            map.get("requestPriseIsEmpty").put("id_room", id_room);
-            String responsePriseIsEmpty = getSend("requestPriseIsEmpty");
-            String[] answers = responsePriseIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                // System.out.println(b);
-            }
-            if (!answers[0].contains("t")) {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-            } else {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
-            }
-            currentEquipment = ImageIO.read(imgURL);
-            g.drawImage(currentEquipment, 533, 201, 50, 50, null);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void drawPosition4(Graphics g) {
-        URL imgURL;
-        BufferedImage currentEquipment;
-
-        try {
-            String id_room = WindowsMapping.getId_room();
-            map.get("requestSensorIsEmpty").put("id_room", id_room);
-            String requestSensorIsEmpty = getSend("requestSensorIsEmpty");
-            String[] answers = requestSensorIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                // System.out.println(b);
-            }
-            if (!answers[0].contains("t")) {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-            } else {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
-            }
-            currentEquipment = ImageIO.read(imgURL);
-            g.drawImage(currentEquipment, 99, 377, 50, 50, null);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        drawEquipment("533", "201", g);
     }
 
     public void drawPosition3(Graphics g) {
-        URL imgURL;
-        BufferedImage currentEquipment;
+        drawEquipment("550", "549", g);
+    }
 
-        try {
-            String id_room = WindowsMapping.getId_room();
-            map.get("requestWindowsIsEmpty").put("id_room", id_room);
-            String requestWindowsIsEmpty = getSend("requestWindowsIsEmpty");
-            String[] answers = requestWindowsIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                // System.out.println(b);
-            }
-            if (!answers[0].contains("t")) {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-            } else {
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
-            }
-            currentEquipment = ImageIO.read(imgURL);
-            g.drawImage(currentEquipment, 550, 549, 50, 50, null);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void drawPosition4(Graphics g) {
+        drawEquipment("99", "377", g);
     }
 
 
@@ -171,284 +126,179 @@ public class Gestion extends JPanel implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        BufferedImage currentEquipment;
-        URL mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
         if (e.getX() >= 195 & e.getX() <= 245 & e.getY() >= 460 & e.getY() <= 510) {
-            //envoyer la requete si l'emplacement est occupé ou pas
-            String id_room = WindowsMapping.getId_room();
-
-            map.get("requestScreenIsEmpty").put("id_room", id_room);
-            String responseScreenIsEmpty = getSend("requestScreenIsEmpty");
-            String[] answers = responseScreenIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                System.out.println(b);
-            }
-
-
-            if (!answers[0].contains("t")) {
-                int responseScreen = JOptionPane.showConfirmDialog(null, " Voulez vous placer un écran?");
-                if (responseScreen == JOptionPane.YES_OPTION) {
-
-
-                    String valueChoose = "1";
-                    map.get("requestUpdate").put("value", valueChoose);
-                    map.get("requestUpdate").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdate");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
-
-                    try {
-                        currentEquipment = ImageIO.read(mapUrl);
-                        getGraphics().drawImage(currentEquipment, 195, 460, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }
-            } else {
-                int responseScreen = JOptionPane.showConfirmDialog(null, " Voulez vous supprimer un écran?");
-                if (responseScreen == JOptionPane.YES_OPTION) {
-
-
-                    String valueChoose = "0";
-                    map.get("requestUpdate").put("value", valueChoose);
-                    map.get("requestUpdate").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdate");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
-
-                    try {
-                        URL imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-                        currentEquipment = ImageIO.read(imgURL);
-                        getGraphics().clearRect(195, 460, 50, 50);
-                        getGraphics().drawImage(currentEquipment, 195, 460, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }
-            }
-
+            placeOrDelete("195", "460");
         }
-
-
-        URL mapUrl2 = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
         if (e.getX() >= 533 & e.getX() <= 583 & e.getY() >= 201 & e.getY() <= 251) {
-
-            String id_room = WindowsMapping.getId_room();
-
-            map.get("requestPriseIsEmpty").put("id_room", id_room);
-            String responsePriseIsEmpty = getSend("requestPriseIsEmpty");
-            String[] answers = responsePriseIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                System.out.println(b);
-            }
-
-            if (!answers[0].contains("t")) {
-                int responsePrise = JOptionPane.showConfirmDialog(null, " Voulez vous placer une prise?");
-                if (responsePrise == JOptionPane.YES_OPTION) {
-
-
-                    String valueChoose = "1";
-                    map.get("requestUpdatePrise").put("value", valueChoose);
-                    map.get("requestUpdatePrise").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdatePrise");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
-
-                    try {
-                        currentEquipment = ImageIO.read(mapUrl2);
-                        getGraphics().drawImage(currentEquipment, 533, 201, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }
-            } else {
-                int responseScreen = JOptionPane.showConfirmDialog(null, " Voulez vous supprimer une prise?");
-                if (responseScreen == JOptionPane.YES_OPTION) {
-
-
-                    String valueChoose = "0";
-                    map.get("requestUpdatePrise").put("value", valueChoose);
-                    map.get("requestUpdatePrise").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdatePrise");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
-
-                    try {
-                        URL imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-                        currentEquipment = ImageIO.read(imgURL);
-                        getGraphics().clearRect(533, 201, 50, 50);
-                        getGraphics().drawImage(currentEquipment, 533, 201, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }
-            }
-
+            placeOrDelete("533", "201");
         }
-
-        URL mapUrl1 = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
         if (e.getX() >= 550 & e.getX() <= 600 & e.getY() >= 549 & e.getY() <= 599) {
+            placeOrDelete("550", "549");
+        }
+        if (e.getX() >= 99 & e.getX() <= 149 & e.getY() >= 377 & e.getY() <= 427) {
+            placeOrDelete("99", "377");
+        }
+    }
 
-            String id_room = WindowsMapping.getId_room();
-
-            map.get("requestWindowsIsEmpty").put("id_room", id_room);
-            String requestWindowsIsEmpty = getSend("requestWindowsIsEmpty");
-            String[] answers = requestWindowsIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                System.out.println(b);
+    private void placeOrDelete(String x, String y) {
+        JOptionPane d = new JOptionPane();
+        map.get("requestGetEquipment");
+        String responses = getSend("requestGetEquipment");
+        String[] ListEquipment = responses.split("@");
+        for (String b : ListEquipment) {
+            if (b.contains("@")) {
+                b.replace("@", "");
             }
-
-            if (!answers[0].contains("t")) {
-                int responsePrise = JOptionPane.showConfirmDialog(null, " Voulez vous placer une fenetre?");
-                if (responsePrise == JOptionPane.YES_OPTION) {
-
-
-                    String valueChoose = "1";
-                    map.get("requestUpdateWindows").put("value", valueChoose);
-                    map.get("requestUpdateWindows").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdateWindows");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
-
-                    try {
-                        currentEquipment = ImageIO.read(mapUrl1);
-                        getGraphics().drawImage(currentEquipment, 550, 549, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }
-            } else {
-                int responseScreen = JOptionPane.showConfirmDialog(null, " Voulez vous supprimer une fenetre?");
-                if (responseScreen == JOptionPane.YES_OPTION) {
-
-
-                    String valueChoose = "0";
-                    map.get("requestUpdateWindows").put("value", valueChoose);
-                    map.get("requestUpdateWindows").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdateWindows");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
-
-                    try {
-                        URL imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-                        currentEquipment = ImageIO.read(imgURL);
-                        getGraphics().clearRect(550, 549, 50, 50);
-                        getGraphics().drawImage(currentEquipment, 550, 549, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }
-            }
-
+            System.out.println(b);
         }
 
-        URL mapUrl3 = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
-        if (e.getX() >= 99 & e.getX() <= 149 & e.getY() >= 377 & e.getY() <= 427) {
+        BufferedImage currentEquipment;
+        URL mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
 
-            String id_room = WindowsMapping.getId_room();
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Quel équipement voulez vous placer?");
+        panel.add(label);
 
-            map.get("requestSensorIsEmpty").put("id_room", id_room);
-            String requestSensorIsEmpty = getSend("requestSensorIsEmpty");
-            String[] answers = requestSensorIsEmpty.split("@");
-            for (String b : answers) {
-                if (b.contains("@")) {
-                    b.replace("@", "");
-                }
-                System.out.println(b);
+        String id_room = WindowsMapping.getId_room();
+
+        map.get("requestGetLocalisation").put("id_room", id_room);
+        map.get("requestGetLocalisation").put("positionX", x);
+        map.get("requestGetLocalisation").put("positionY", y);
+        String requestGetLocalisation = getSend("requestGetLocalisation");
+        String[] answersLocalisation = requestGetLocalisation.split("@");
+        for (String b : answersLocalisation) {
+            if (b.contains("@")) {
+                b.replace("@", "");
+            }
+        }
+
+        String id_localisation = answersLocalisation[0];
+
+        map.get("requestVerifyStatus").put("id_localisation", id_localisation);
+        String requestVerifyStatus = getSend("requestVerifyStatus");
+        String[] answers = requestVerifyStatus.split("@");
+        for (String b : answers) {
+            if (b.contains("@")) {
+                b.replace("@", "");
+            }
+        }
+
+        System.out.println("Is empty ? : " + answers[0]);
+
+
+        if (answers[0].contains("t")) {
+
+            String name_equipment =
+                    (String) JOptionPane.showInputDialog(null,
+                            "Veuillez indiquer votre équipement",
+                            "Choix d'équipements",
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            ListEquipment,
+                            ListEquipment[0]);
+            System.out.println((String) name_equipment);
+
+
+            if (name_equipment.contains("fenêtre")) {
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
+            } else if (name_equipment.contains("capteur")) {
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
+            } else if (name_equipment.contains("prise")) {
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
+            } else if (name_equipment.contains("écran")) {
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
             }
 
-            if (!answers[0].contains("t")) {
-                int responseSensor = JOptionPane.showConfirmDialog(null, " Voulez vous placer un capteur?");
-                if (responseSensor == JOptionPane.YES_OPTION) {
 
+            if (name_equipment.contains("fenêtre") | name_equipment.contains("capteur") | name_equipment.contains("prise") | name_equipment.contains("écran")) {
 
-                    String valueChoose = "1";
-                    map.get("requestUpdateSensor").put("value", valueChoose);
-                    map.get("requestUpdateSensor").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdateSensor");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
-                    }
+                String availablity = "false";
 
-                    try {
-                        currentEquipment = ImageIO.read(mapUrl3);
-                        getGraphics().drawImage(currentEquipment, 99, 377, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                map.get("requestUpdateEquipment").put("id_localisation", id_localisation);
+                map.get("requestUpdateEquipment").put("availablity", availablity);
+                map.get("requestUpdateEquipment").put("name_equipment", name_equipment);
+                String requestUpdateEquipment = getSend("requestUpdateEquipment");
+                String[] answersUpdate = requestUpdateEquipment.split("@");
+                for (String b : answersUpdate) {
+                    if (b.contains("@")) {
+                        b.replace("@", "");
                     }
                 }
-            } else {
-                int responseSensor = JOptionPane.showConfirmDialog(null, " Voulez vous supprimer un capteur?");
-                if (responseSensor == JOptionPane.YES_OPTION) {
 
-
-                    String valueChoose = "0";
-                    map.get("requestUpdateSensor").put("value", valueChoose);
-                    map.get("requestUpdateSensor").put("id_room", id_room);
-                    String responseUpdate = getSend("requestUpdateSensor");
-                    answers = responseUpdate.split("@");
-                    for (String b : answers) {
-                        if (b.contains("@")) {
-                            b.replace("@", "");
-                        }
-                        System.out.println(b);
+                map.get("requestUpdateStatus").put("id_localisation", id_localisation);
+                map.get("requestUpdateStatus").put("empty", "false");
+                String requestUpdateStatus = getSend("requestUpdateStatus");
+                String[] answersUpdates = requestUpdateStatus.split("@");
+                for (String b : answersUpdates) {
+                    if (b.contains("@")) {
+                        b.replace("@", "");
                     }
+                }
 
-                    try {
-                        URL imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
-                        currentEquipment = ImageIO.read(imgURL);
-                        getGraphics().clearRect(99, 377, 50, 50);
-                        getGraphics().drawImage(currentEquipment, 99, 377, 50, 50, null);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
+
+                try {
+                    currentEquipment = ImageIO.read(mapUrl);
+                    int xx = Integer.valueOf(x);
+                    int yy = Integer.valueOf(y);
+                    getGraphics().drawImage(currentEquipment, xx, yy, 50, 50, null);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+
+            }
+        } else {
+            int responseScreen = JOptionPane.showConfirmDialog(null, "Voulez vous supprimer l'équipement?");
+            if (responseScreen == JOptionPane.YES_OPTION) {
+
+                String availablity = "true";
+
+
+                map.get("requestGetNameEquipment").put("id_localisation", id_localisation);
+                String requestGetNameEquipment = getSend("requestGetNameEquipment");
+                String[] answersUpdate = requestGetNameEquipment.split("@");
+                for (String b : answersUpdate) {
+                    if (b.contains("@")) {
+                        b.replace("@", "");
                     }
+                }
+                String name_equipment = answersUpdate[0];
+
+                map.get("requestUpdateEquipment").put("id_localisation", id_localisation);
+                map.get("requestUpdateEquipment").put("availablity", availablity);
+                map.get("requestUpdateEquipment").put("name_equipment", name_equipment);
+                String requestUpdateEquipment = getSend("requestUpdateEquipment");
+                answersUpdate = requestUpdateEquipment.split("@");
+                for (String b : answersUpdate) {
+                    if (b.contains("@")) {
+                        b.replace("@", "");
+                    }
+                }
+
+                map.get("requestUpdateStatus").put("id_localisation", id_localisation);
+                map.get("requestUpdateStatus").put("empty", "true");
+                String requestUpdateStatus = getSend("requestUpdateStatus");
+                String[] answersUpdates = requestUpdateStatus.split("@");
+                for (String b : answersUpdates) {
+                    if (b.contains("@")) {
+                        b.replace("@", "");
+                    }
+                }
+
+                try {
+                    URL imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
+                    currentEquipment = ImageIO.read(imgURL);
+                    int xx = Integer.valueOf(x);
+                    int yy = Integer.valueOf(y);
+                    getGraphics().clearRect(xx, yy, 50, 50);
+                    getGraphics().drawImage(currentEquipment, xx, yy, 50, 50, null);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
                 }
             }
         }
     }
+
 
     @Override
     public void mouseReleased(MouseEvent e) {
