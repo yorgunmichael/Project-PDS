@@ -80,7 +80,7 @@ public class GestionRoom extends JPanel implements MouseListener {
                 }
                 String name_equipment = answersrequestEquipment[0];
 
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                imgURL = Thread.currentThread().getContextClassLoader().getResource("écranActif.jpg");
 
                 if (name_equipment.contains("fenêtre")) {
                     imgURL = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
@@ -89,7 +89,7 @@ public class GestionRoom extends JPanel implements MouseListener {
                 } else if (name_equipment.contains("prise")) {
                     imgURL = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
                 } else if (name_equipment.contains("écran")) {
-                    imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("écranActif.jpg");
                 }
 
             }
@@ -130,7 +130,12 @@ public class GestionRoom extends JPanel implements MouseListener {
 
 
         if (e.getX() >= 625 & e.getX() <= 675 & e.getY() >= 220 & e.getY() <= 270) {
-            placeOrDelete("625", "220");
+            if ((e.getButton() == MouseEvent.BUTTON3)) {
+                changeStatus("625", "220");
+            } else {
+                placeOrDelete("625", "220");
+            }
+
         } else if (e.getX() >= 236 & e.getX() <= 286 & e.getY() >= 189 & e.getY() <= 239) {
             placeOrDelete("236", "189");
         } else if (e.getX() >= 557 & e.getX() <= 607 & e.getY() >= 560 & e.getY() <= 610) {
@@ -140,6 +145,80 @@ public class GestionRoom extends JPanel implements MouseListener {
         }
 
     }
+
+    private void changeStatus(String x, String y) {
+
+        String id_room = WindowsMapping.getId_room();
+
+        map.get("requestGetLocalisation").put("id_room", id_room);
+        map.get("requestGetLocalisation").put("positionX", x);
+        map.get("requestGetLocalisation").put("positionY", y);
+        String requestGetLocalisation = getSend("requestGetLocalisation");
+        String[] answersLocalisation = requestGetLocalisation.split("@");
+        for (String b : answersLocalisation) {
+            if (b.contains("@")) {
+                b.replace("@", "");
+            }
+        }
+
+        map.get("requestGetEquip").put("id_room", id_room);
+        map.get("requestGetEquip").put("positionX", x);
+        map.get("requestGetEquip").put("positionY", y);
+        String requestGetEquip = getSend("requestGetEquip");
+        String[] answersEquipment = requestGetEquip.split("@");
+        for (String b : answersEquipment) {
+            if (b.contains("@")) {
+                b.replace("@", "");
+            }
+        }
+
+        String name_equipment = answersEquipment[0];
+
+        map.get("requestGetStatusEquipment").put("name_equipment", name_equipment);
+        String requestGetStatusEquipment = getSend("requestGetStatusEquipment");
+        String[] answersStatus = requestGetStatusEquipment.split("@");
+        for (String b : answersStatus) {
+            if (b.contains("@")) {
+                b.replace("@", "");
+            }
+        }
+
+        String status = answersStatus[0];
+
+        if (status.equals("Actif")) {
+            status = "Inactif";
+
+        } else {
+            status = "Actif";
+        }
+        URL mapUrl;
+      int response  = JOptionPane.showConfirmDialog(null, "Voulez vous changer le status de l'équipement");
+        if(response == JOptionPane.YES_OPTION) {
+
+            map.get("requestUpdateStatusEquipment").put("status", status);
+            map.get("requestUpdateStatusEquipment").put("name_equipment", name_equipment);
+            String requestUpdateStatusEquipment = getSend("requestUpdateStatusEquipment");
+            String[] answersUpdatees = requestUpdateStatusEquipment.split("@");
+            for (String b : answersUpdatees) {
+                if (b.contains("@")) {
+                    b.replace("@", "");
+                }
+            }
+
+            if (name_equipment.contains("fenêtre")) {
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
+            } else if (name_equipment.contains("capteur")) {
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
+            } else if (name_equipment.contains("prise")) {
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
+            } else if (name_equipment.contains("écran")) {
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+            }
+
+        }
+
+    }
+
 
     private void placeOrDelete(String x, String y) {
         JOptionPane d = new JOptionPane();
@@ -207,7 +286,7 @@ public class GestionRoom extends JPanel implements MouseListener {
             } else if (name_equipment.contains("prise")) {
                 mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
             } else if (name_equipment.contains("écran")) {
-                mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("écranActif.jpg");
             }
 
 

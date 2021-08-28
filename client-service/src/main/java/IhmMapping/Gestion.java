@@ -78,7 +78,7 @@ public class Gestion extends JPanel implements MouseListener {
                 }
                 String name_equipment = answersrequestEquipment[0];
 
-                imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                imgURL = Thread.currentThread().getContextClassLoader().getResource("écranActif.jpg");
 
                 if (name_equipment.contains("fenêtre")) {
                     imgURL = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
@@ -87,7 +87,7 @@ public class Gestion extends JPanel implements MouseListener {
                 } else if (name_equipment.contains("prise")) {
                     imgURL = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
                 } else if (name_equipment.contains("écran")) {
-                    imgURL = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                    imgURL = Thread.currentThread().getContextClassLoader().getResource("écranActif.jpg");
                 }
 
             }
@@ -206,7 +206,7 @@ public class Gestion extends JPanel implements MouseListener {
             } else if (name_equipment.contains("prise")) {
                 mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
             } else if (name_equipment.contains("écran")) {
-                mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
+                mapUrl = Thread.currentThread().getContextClassLoader().getResource("écranActif.jpg");
             }
 
 

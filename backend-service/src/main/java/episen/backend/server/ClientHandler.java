@@ -140,6 +140,13 @@ public class ClientHandler implements Runnable {
             if (request.split("@")[0].equals("requestEquipment")) {
                 ds.writeUTF(requestEquipment(connection, map).toString());
             }
+            if (request.split("@")[0].equals("requestUpdateStatusEquipment")) {
+                ds.writeUTF(requestUpdateStatusEquipment(connection, map).toString());
+            }
+            if (request.split("@")[0].equals("requestGetStatusEquipment")) {
+                ds.writeUTF(requestGetStatusEquipment(connection, map).toString());
+            }
+
 
 
 
@@ -1082,9 +1089,10 @@ public class ClientHandler implements Runnable {
         try {
 
             String sql = "SELECT empty FROM localisation" +
-                    "    WHERE id_localisation = '" + map.get("id_localisation") + "'";
-            ResultSet rs = connection.createStatement().executeQuery(sql);
+                    "    WHERE id_localisation = " + map.get("id_localisation") + "";
             System.out.println(sql);
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+
             sb = new StringBuilder();
             while (rs.next()) {
                 sb.append(rs.getString(1) + "@");
@@ -1126,6 +1134,74 @@ public class ClientHandler implements Runnable {
             String sql = "SELECT name_equipment" +
                     " FROM equipment " +
                     "WHERE id_localisation = "+map.get("id_localisation");
+            System.out.println(sql);
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+
+            sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append(rs.getString(1) + "@");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestUpdateStatusEquipment(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "UPDATE equipment" +
+                    " set status = '"+map.get("status")  +
+                    " WHERE name_equipment = '"+map.get("name_equipment")+"'";
+
+
+            System.out.println(sql);
+            connection.createStatement().executeUpdate(sql);
+           // System.out.println(sql);
+            sb = new StringBuilder();
+            sb.append("Update done");
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestGetStatusEquipment(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "SELECT status" +
+                    " FROM equipment " +
+                    " WHERE name_equipment = " +map.get(" name_equipment");
+            System.out.println(sql);
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+
+            sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append(rs.getString(1) + "@");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
+    }
+
+    public StringBuilder requestGetEquip(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+
+            String sql = "SELECT name_equipment" +
+                    "FROM equipment INNER JOIN localisationn" +
+                    "ON equipment.id_localisation = localisation.id_localisation" +
+                    "WHERE id_room = "+map.get("id_room")+" "+" AND position_x = "+map.get("positionX")+" "+" AND position_y = "+map.get("positionY")+"";
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 

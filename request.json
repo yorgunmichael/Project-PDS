@@ -7,7 +7,7 @@
   },
   "requestFloor": {
     "company_name": "",
-    "building_name":""
+    "building_name": ""
   },
   "requestObjetConn": {
     "id_location": "",
@@ -21,7 +21,7 @@
     "company_name": "",
     "building_name": "",
     "floor_name": "",
-    "status" : ""
+    "status": ""
   },
   "requestSensor": {
     "id_sensor": "",
@@ -51,131 +51,151 @@
     "id_room": "",
     "value": ""
   },
-  "requestUpdatePrise" : {
+  "requestUpdatePrise": {
     "id_room": "",
     "value": ""
   },
-  "requestUpdateSensor" : {
+  "requestUpdateSensor": {
     "id_room": "",
     "value": ""
   },
-  "requestUpdateWindows" : {
+  "requestUpdateWindows": {
     "id_room": "",
     "value": ""
   },
-
-  "requestGetIdRoom" : {
+  "requestGetIdRoom": {
     "name_room": ""
   },
-
-  "requestScreenIsEmpty" : {
-    "id_room" : ""
+  "requestScreenIsEmpty": {
+    "id_room": ""
   },
-  "requestPriseIsEmpty" : {
-    "id_room" : ""
+  "requestPriseIsEmpty": {
+    "id_room": ""
   },
-
-  "requestSensorIsEmpty" : {
-    "id_room" : ""
+  "requestSensorIsEmpty": {
+    "id_room": ""
   },
-  "requestWindowsIsEmpty" : {
-    "id_room" : ""
+  "requestWindowsIsEmpty": {
+    "id_room": ""
   },
-
-  "requestGetEquipment" : {
+  "requestGetEquipment": {
   },
-
-  "requestUpdateEquipment" : {
-    "id_localisation" : "",
-    "name_equipment" : "",
+  "requestUpdateEquipment": {
+    "id_localisation": "",
+    "name_equipment": "",
     "availablity": ""
   },
-
-  "requestGetLocalisation" : {
-    "id_room" : "",
-    "positionX" : "",
+  "requestGetLocalisation": {
+    "id_room": "",
+    "positionX": "",
+    "positionY": ""
+  },
+  "requestUpdateStatus": {
+    "id_localisation": "",
+    "empty": ""
+  },
+  "requestGetEquip": {
+    "id_room": "",
+    "positionX": "",
     "positionY": ""
   },
 
-  "requestUpdateStatus" : {
-    "id_localisation" : "",
-    "empty" : ""
+  "requestVerifyStatus": {
+    "id_localisation": ""
   },
-
-  "requestVerifyStatus" : {
-    "id_localisation" : ""
+  "requestGetNameEquipment": {
+    "id_localisation": ""
   },
-
-  "requestGetNameEquipment" : {
-    "id_localisation" : ""
+  "requestEquipment": {
+    "id_localisation": ""
   },
-
-  "requestEquipment" : {
-    "id_localisation" : ""
+  "requestUpdateStatusEquipment": {
+    "status": "",
+    "name_equipment": ""
   },
-
-
-
-  "rateOccupation" : {},
-  "connectedObject" : {},
+  "requestGetStatusEquipment": {
+    "name_equipment": ""
+  },
+  "rateOccupation": {},
+  "connectedObject": {},
   "allEquipment": {},
-  "allSensor" : {},
-  "allCompany" : {},
-  "energyConsommation" : {},
-
-
-  "companyOccupation": {"company_name": ""},
-  "CompanyConnectedObject": {"company_name": ""},
-  "AllEquipmentCompany": {"company_name": ""},
-  "allSensorCompany": {"company_name": ""},
-  "energyConsommationCompany": {"company_name": ""},
-  "usedBatiment": {"company_name": ""},
-
-
-
-  "rateBuilding" : {"building_name": ""},
-  "objectBuilding" : {"building_name": ""},
-  "equipmentBuilding" : {"building_name": ""},
-  "sensorBuilding": {"building_name": ""},
-  "companyBuilding" : {"building_name": ""},
-  "energyBuilding": {"building_name": ""},
-  "allFloor": {"building_name": ""},
-
+  "allSensor": {},
+  "allCompany": {},
+  "energyConsommation": {},
+  "companyOccupation": {
+    "company_name": ""
+  },
+  "CompanyConnectedObject": {
+    "company_name": ""
+  },
+  "AllEquipmentCompany": {
+    "company_name": ""
+  },
+  "allSensorCompany": {
+    "company_name": ""
+  },
+  "energyConsommationCompany": {
+    "company_name": ""
+  },
+  "usedBatiment": {
+    "company_name": ""
+  },
+  "rateBuilding": {
+    "building_name": ""
+  },
+  "objectBuilding": {
+    "building_name": ""
+  },
+  "equipmentBuilding": {
+    "building_name": ""
+  },
+  "sensorBuilding": {
+    "building_name": ""
+  },
+  "companyBuilding": {
+    "building_name": ""
+  },
+  "energyBuilding": {
+    "building_name": ""
+  },
+  "allFloor": {
+    "building_name": ""
+  },
   "initPlanLocation": {
-    "rl_building":  "",
-    "rl_floor":  ""
+    "rl_building": "",
+    "rl_floor": ""
   },
   "getPlace": {
-    "rl_building":  ""
+    "rl_building": ""
   },
   "getListBuilding": {
   },
   "getListFloor": {
-    "rl_building":  ""
+    "rl_building": ""
   },
   "getNameBuilding": {
-    "rl_building":  ""
+    "rl_building": ""
   },
   "getNbFloorFree": {
-    "rl_building":  "",
-    "rl_floor":  ""
+    "rl_building": "",
+    "rl_floor": ""
   },
   "getFloorStatu": {
-    "rl_building":  "",
-    "rl_floor":  ""
+    "rl_building": "",
+    "rl_floor": ""
   },
   "setFloorStatu": {
-    "rl_building":  "",
-    "rl_floor":  "",
-    "rl_floor_to_set":""
+    "rl_building": "",
+    "rl_floor": "",
+    "rl_floor_to_set": ""
   },
   "getDispoBat": {
-    "rl_building":  "",
+    "rl_building": "",
     "rl_nb_loc": ""
   },
   "setStatuResa": {
-    "rl_building":  "",
-    "rl_resa":""
+    "rl_building": "",
+    "rl_resa": ""
   },
   "insertCompany": {
     "rl_company_name": ""
