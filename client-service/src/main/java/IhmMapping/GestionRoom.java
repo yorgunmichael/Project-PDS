@@ -244,12 +244,27 @@ public class GestionRoom extends JPanel implements MouseListener {
             }
 
             if (name_equipment.contains("fenêtre")) {
-                mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
+                if(status.equals("Inactif")) {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetre.jpg");
+                } else {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("fenetreActif.jpg");
+                }
 
             } else if (name_equipment.contains("capteur")) {
-                mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
+                if(status.equals("Inactif")) {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteur.jpg");
+                } else {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("capteurActif.jpg");
+                }
+
             } else if (name_equipment.contains("prise")) {
-                mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
+                if(status.equals("Inactif")) {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("prise.jpg");
+                }
+                else {
+                    mapUrl = Thread.currentThread().getContextClassLoader().getResource("priseActif.jpg");
+                }
+
             } else if (name_equipment.contains("écran")) {
                 if (status.equals("Inactif")) {
                     mapUrl = Thread.currentThread().getContextClassLoader().getResource("écran.jpg");
