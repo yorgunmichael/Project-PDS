@@ -146,6 +146,9 @@ public class ClientHandler implements Runnable {
             if (request.split("@")[0].equals("requestGetStatusEquipment")) {
                 ds.writeUTF(requestGetStatusEquipment(connection, map).toString());
             }
+            if (request.split("@")[0].equals("requestGetEquip")) {
+                ds.writeUTF(requestGetEquip(connection, map).toString());
+            }
 
 
 
@@ -1003,7 +1006,7 @@ public class ClientHandler implements Runnable {
         try {
 
             String sql = "SELECT name_equipment FROM equipment" +
-                    "    WHERE availablity = TRUE";
+                    "    WHERE availablity = TRUE ORDER BY name_equipment"  ;
             ResultSet rs = connection.createStatement().executeQuery(sql);
             System.out.println(sql);
             sb = new StringBuilder();
@@ -1023,7 +1026,7 @@ public class ClientHandler implements Runnable {
         try {
 
             String sql = "UPDATE equipment" +
-                    " set availablity = "+map.get("availablity") +", id_localisation = "+map.get("id_localisation") +"" +
+                    " set availablity = "+map.get("availablity") +", id_localisation = "+map.get("id_localisation") +""+
                     " WHERE name_equipment = '"+map.get("name_equipment") +"'" ;
 
 
@@ -1155,7 +1158,7 @@ public class ClientHandler implements Runnable {
 
             String sql = "UPDATE equipment" +
                     " set status = '"+map.get("status")  +
-                    " WHERE name_equipment = '"+map.get("name_equipment")+"'";
+                    "' WHERE name_equipment = '"+map.get("name_equipment")+"'";
 
 
             System.out.println(sql);
@@ -1178,7 +1181,7 @@ public class ClientHandler implements Runnable {
 
             String sql = "SELECT status" +
                     " FROM equipment " +
-                    " WHERE name_equipment = " +map.get(" name_equipment");
+                    " WHERE name_equipment = '" +map.get("name_equipment") +"'" ;
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 
@@ -1198,10 +1201,10 @@ public class ClientHandler implements Runnable {
 
         try {
 
-            String sql = "SELECT name_equipment" +
-                    "FROM equipment INNER JOIN localisationn" +
-                    "ON equipment.id_localisation = localisation.id_localisation" +
-                    "WHERE id_room = "+map.get("id_room")+" "+" AND position_x = "+map.get("positionX")+" "+" AND position_y = "+map.get("positionY")+"";
+            String sql = "SELECT name_equipment " +
+                    "FROM equipment INNER JOIN localisation" +
+                    " ON equipment.id_localisation = localisation.id_localisation" +
+                    " WHERE id_room = "+map.get("id_room")+" "+" AND position_x = "+map.get("positionX")+" "+" AND position_y = "+map.get("positionY")+"";
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 
