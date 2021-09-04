@@ -83,7 +83,8 @@
   "requestUpdateEquipment": {
     "id_localisation": "",
     "name_equipment": "",
-    "availablity": ""
+    "availablity": "",
+    "status" : ""
   },
   "requestGetLocalisation": {
     "id_room": "",

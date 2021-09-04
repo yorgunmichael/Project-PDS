@@ -1026,8 +1026,8 @@ public class ClientHandler implements Runnable {
         try {
 
             String sql = "UPDATE equipment" +
-                    " set availablity = "+map.get("availablity") +", id_localisation = "+map.get("id_localisation") +""+
-                    " WHERE name_equipment = '"+map.get("name_equipment") +"'" ;
+                    " set availablity = "+map.get("availablity") +", id_localisation = "+map.get("id_localisation") +", status = '"+map.get("status")+
+                    "' WHERE name_equipment = '"+map.get("name_equipment") +"'" ;
 
 
             connection.createStatement().executeUpdate(sql);

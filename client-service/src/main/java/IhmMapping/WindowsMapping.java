@@ -48,6 +48,7 @@ public class WindowsMapping extends JFrame {
         this.setTitle("Bienvenue à l'affichage");
         this.setSize(900, 800);
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
         getContentPane().setBackground(Color.white);
         panel.setBackground(Color.BLUE);
         panel.setPreferredSize(new Dimension(150, 150));
