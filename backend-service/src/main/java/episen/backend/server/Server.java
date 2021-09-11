@@ -15,7 +15,7 @@ public class Server {
 
     private static final Logger logger = LoggerFactory.getLogger(Server.class.getName());
     private ServerSocket server;
-    private DataSource ds;
+
 
     public Server(ServerConfiguration c) {
 
@@ -23,19 +23,18 @@ public class Server {
             this.server = new ServerSocket(c.getConfiguration().getPort());
             Properties props = new Properties();
             props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("app.properties"));
-            this.ds = new DataSource(c.getN(), props);
             logger.debug("Server starting...");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void serverService() {
+    public void serverService(DataSource ds) {
         try {
             while (true) {
                 // socket object to receive incoming client
                 Socket client = server.accept();
-                logger.debug("A new client is here !");
+                logger.debug("A new request!");
 
                 //create a new thread object
                 Connection connection = ds.addData();
@@ -43,6 +42,7 @@ public class Server {
 
                 // This thread will handle the client
                 new Thread(clientSocket).start();
+                ds.removeData(connection); // je rend la connexion
 
             }
         } catch (IOException e) {

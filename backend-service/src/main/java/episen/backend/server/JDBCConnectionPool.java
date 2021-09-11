@@ -29,7 +29,7 @@ public class JDBCConnectionPool {
             String url = props.getProperty("jdbc.url");
             String login = props.getProperty("jdbc.login");
             String password = props.getProperty("jdbc.password");
-            con = DriverManager.getConnection(url,login, password);
+            con = DriverManager.getConnection(url, login, password);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -37,37 +37,36 @@ public class JDBCConnectionPool {
     }
 
     public void turnConnection(int size) {
-        for(int i= 0; i < size; i++) {
+        System.out.println(size + "//////");
+        for (int i = 0; i < size; i++) {
             myConnection.add(connectionFactory());
         }
     }
 
     public void removeConnection(Connection con) {
-        synchronized (myConnection) {
-            while (true) {
-                if(!myConnection.isEmpty()) {
-                    myConnection.remove(con);
-                    return;
-                }
-                else
-                    try{
-                        myConnection.wait(3000);
-                        addConnection();
-                    } catch(InterruptedException e) {
-                        e.printStackTrace();
-                    }
-            }
-        }
+        System.out.println("le client rend une connexion au serveur");
+        myConnection.add(con);
     }
 
     public Connection addConnection() {
+        if (myConnection.size() == 0) {
+            try {
+                throw new Exception("Aucune connection disponible");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Ajout de connexion");
         Connection con = connectionFactory();
-        myConnection.add(con);
+        System.out.println(myConnection.size() + "le nombre de connexion disponible");
+        myConnection.remove(myConnection.size() - 1);
+        System.out.println(myConnection.size() + "le serveur envoie une connexion au client");
         return con;
+
     }
 
     public void closeConnection() {
-        for(Connection con: myConnection)
+        for (Connection con : myConnection)
             try {
                 con.close();
             } catch (Exception e) {

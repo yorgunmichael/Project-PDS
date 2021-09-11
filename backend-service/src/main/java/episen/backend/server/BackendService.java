@@ -110,7 +110,7 @@ public class BackendService {
         }
         logger.info(loggerInfo);
         Server server = new Server(new ServerConfiguration(10));
-        server.serverService();
+        server.serverService(ds);
 
 
     }
