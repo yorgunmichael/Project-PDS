@@ -5,6 +5,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import episen.backend.pool.DataSource;
+import episen.backend.pool.PropertiesClass;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,11 +27,11 @@ public class BackendService {
 
         Properties props = new Properties();
         //logger.info(System.getenv("PROJECT"));
-        try (FileInputStream fis = new FileInputStream("/home/tata/recources/conf.properties")) {
+        try (FileInputStream fis = new FileInputStream("/usr/local/newera/resources/conf.properties")) {
             props.load(fis);
         }
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        PropertiesClass yamlProps = mapper.readValue(new File("/home/tata/recources/config.yaml"), PropertiesClass.class);
+        PropertiesClass yamlProps = mapper.readValue(new File("/usr/local/newera/resources/config.yaml"), PropertiesClass.class);
 
        // boolean isInTestMode = yamlProps.isTestMode();
         int maxCo = yamlProps.getMaxCo();

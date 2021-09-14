@@ -1,4 +1,4 @@
-package episen.backend.server;
+package episen.backend.pool;
 
 public class PropertiesClass {
 

@@ -1,4 +1,4 @@
-package episen.backend.server;
+package episen.backend.pool;
 
 import java.io.IOException;
 import java.sql.Connection;
