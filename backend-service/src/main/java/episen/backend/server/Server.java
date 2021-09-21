@@ -37,12 +37,12 @@ public class Server {
                 logger.debug("A new request!");
 
                 //create a new thread object
-                Connection connection = ds.addData();
+                Connection connection = ds.getConnection();
                 ClientHandler clientSocket = new ClientHandler(client, connection);
 
                 // This thread will handle the client
                 new Thread(clientSocket).start();
-                ds.removeData(connection); // je rend la connexion
+                ds.addConnection(connection); // je rend la connexion
 
             }
         } catch (IOException e) {

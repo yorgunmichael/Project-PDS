@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.Properties;
 
-public class DataSource {
+public class  DataSource {
 
     private static JDBCConnectionPool pool;
 
@@ -16,11 +16,11 @@ public class DataSource {
             e.printStackTrace();
         }
     }
-    public static Connection addData() {
-        return pool.addConnection();
+    public static Connection getConnection() {
+        return pool.retrieveConnection();
     }
 
-    public void removeData(Connection con) {
+    public static void addConnection(Connection con) {
         pool.removeConnection(con);
     }
 
