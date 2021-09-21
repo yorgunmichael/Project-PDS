@@ -1,0 +1,22 @@
+{
+  "Etudiant1": {
+    "nom": "Chacha",
+    "prenom": "Michael",
+    "age": "25"
+  },
+  "Etudiant2": {
+    "nom": "Cramer",
+    "prenom": "Jordan",
+    "age": "17"
+  },
+  "Etudiant3": {
+    "nom": "Bisquot",
+    "prenom": "Claire",
+    "age": "27"
+  },
+  "Etudiant2maj": {
+    "nom": "Cramer",
+    "prenom": "Jordan",
+    "age": "25"
+  }
+}
