@@ -44,11 +44,7 @@ public class ClientPrototype {
                 map = jmapper.readValue(values, new TypeReference<Map<String, Map<String, String>>>() {
                 });
                 getSend(request);
-            } else {
-                log.info("missing student argument");
-            }
-
-            if (commandLine.hasOption("student")) {
+            } else if (commandLine.hasOption("student") & commandLine.hasOption("crud")) {
                 String request = commandLine.getOptionValue("student");
                 String crud_op = commandLine.getOptionValue("crud");
                 log.info(request);
@@ -56,13 +52,13 @@ public class ClientPrototype {
                 configuration = System.getenv(configurationvariable);
                 String values = Files.readString(Path.of(configuration));
                 ObjectMapper jmapper = new ObjectMapper(new JsonFactory());
-
                 map = jmapper.readValue(values, new TypeReference<Map<String, Map<String, String>>>() {
                 });
                 getSendd(request, crud_op);
             } else {
                 log.info("missing student argument");
             }
+
 
 
         } catch (IOException | ParseException e) {
@@ -82,14 +78,10 @@ public class ClientPrototype {
             DataOutputStream outputData = new DataOutputStream(out);
             log.info(request);
             log.info(data);
-            try {
-                sleep(900);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
             outputData.writeUTF(request + "@" + data);
             try {
-                sleep(2500);
+                sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
