@@ -96,14 +96,14 @@ public class BackendService {
         System.out.println("Encore toi");
         while (true) {
             String crud_op = di.readUTF();
-            System.out.println(crud_op);
+            logger.info(crud_op + "contenue est "+ "crud_op");
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             String request = di.readUTF();
-            System.out.println(request);
+            logger.info(request + "--" + "request");
             ObjectMapper mapper = new ObjectMapper(new JsonFactory());
 
             Map<String, String> map = mapper.readValue(request.split("@")[1], new TypeReference<Map<String, String>>() {
@@ -112,7 +112,7 @@ public class BackendService {
             Connection co = dataSource.getConnection();
             if (req.contains("Etudiant") & crud_op.contains("insert")) {
                 ds.writeUTF(crud_insert(co, map).toString());
-                System.out.println("fin de crud");
+                logger.info("Exécution insert");
             } else if (req.contains("Etudiant") & crud_op.equals("delete")) {
                 ds.writeUTF(crud_delete(co, map).toString());
             }else if (req.contains("Etudiant") & crud_op.equals("update")) {
@@ -169,13 +169,16 @@ public class BackendService {
             Map<String, String> map = mapper.readValue(request.split("@")[1], new TypeReference<Map<String, String>>() {
             });
             if (request.split("@")[0].equals("Etudiant1")) {
-                ds.writeUTF("Bonjour " + map.get("nom1") + " " + map.get("prenom1") + " vous avez " + map.get("age1") + " ans");
+                ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
             }
             if (request.split("@")[0].equals("Etudiant2")) {
-                ds.writeUTF("Bonjour " + map.get("nom2") + " " + map.get("prenom2") + " vous avez " + map.get("age2") + " ans");
+                ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
             }
             if (request.split("@")[0].equals("Etudiant3")) {
-                ds.writeUTF("Bonjour " + map.get("nom3") + " " + map.get("prenom3") + " vous avez " + map.get("age3") + " ans");
+                ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
+            }
+            if (request.split("@")[0].equals("Etudiant4")) {
+                ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
             }
         }
     }
