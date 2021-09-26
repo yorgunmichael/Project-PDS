@@ -18,5 +18,10 @@
     "nom": "Cramer",
     "prenom": "Jordan",
     "age": "25"
+  },
+  "Etudiant4": {
+    "nom": "Buildt",
+    "prenom": "Jean",
+    "age": "23"
   }
 }
