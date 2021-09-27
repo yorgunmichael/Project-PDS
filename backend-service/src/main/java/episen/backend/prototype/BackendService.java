@@ -59,7 +59,7 @@ public class BackendService {
                 } else if (requestmode.contains("crud")) {
                     crud();
                 } else if (requestmode.contains("overload")) {
-                    pooloverload(3,props);
+                    pooloverload(3, props);
                 }
 
             }
@@ -72,7 +72,7 @@ public class BackendService {
     }
 
     private static void pooloverload(int nbCo, Properties props) throws InterruptedException {
-        dataSource = new DataSource(nbCo,props);
+        dataSource = new DataSource(nbCo, props);
         while (true) {
             sleep(2000);
             dataSource.getConnection();
@@ -87,23 +87,22 @@ public class BackendService {
         socket = serverSocket.accept();
 
 
-        System.out.println("j'entre dans la méthode");
         OutputStream out = socket.getOutputStream();
         InputStream in = socket.getInputStream();
         DataOutputStream ds = new DataOutputStream(out);
         DataInputStream di = new DataInputStream(in);
 
-        System.out.println("Encore toi");
+
         while (true) {
             String crud_op = di.readUTF();
-            logger.info(crud_op + "contenue est "+ "crud_op");
+            logger.info(crud_op);
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             String request = di.readUTF();
-            logger.info(request + "--" + "request");
+            logger.info(request);
             ObjectMapper mapper = new ObjectMapper(new JsonFactory());
 
             Map<String, String> map = mapper.readValue(request.split("@")[1], new TypeReference<Map<String, String>>() {
@@ -115,10 +114,9 @@ public class BackendService {
                 logger.info("Exécution insert");
             } else if (req.contains("Etudiant") & crud_op.equals("delete")) {
                 ds.writeUTF(crud_delete(co, map).toString());
-            }else if (req.contains("Etudiant") & crud_op.equals("update")) {
+            } else if (req.contains("Etudiant") & crud_op.equals("update")) {
                 ds.writeUTF(crud_update(co, map).toString());
-            }
-            else if (req.contains("Etudiant") & crud_op.equals("read")) {
+            } else if (req.contains("Etudiant") & crud_op.equals("read")) {
                 ds.writeUTF(crud_read(co, map).toString());
             }
             dataSource.addConnection(co);
@@ -127,15 +125,35 @@ public class BackendService {
 
     }
 
-    private static Object crud_read(Connection connection, Map<String, String> map) {
-        return null;
+    private static StringBuilder crud_read(Connection connection, Map<String, String> map) {
+        StringBuilder sb = null;
+
+        try {
+            String sql = "select s.name, first_name, old\n" +
+                    "from student s\n" +
+                    "Where s.name = '"+map.get("nom")+ "'";
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+            System.out.println(sql);
+
+            sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append("nom: "+rs.getString(1) + " ");
+                sb.append("prenom: "+rs.getString(2) + " ");
+                sb.append("age: "+rs.getString(3) + " ans");
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sb;
     }
 
     private static StringBuilder crud_update(Connection connection, Map<String, String> map) {
         StringBuilder sb = null;
 
         try {
-            String sql = "Update student set old = '"+ map.get("age")+ "'where name ='" + map.get("nom")+"'" ;
+            String sql = "Update student set old = '" + map.get("age") + "'where name ='" + map.get("nom") + "'";
             connection.createStatement().executeUpdate(sql);
             System.out.println(sql);
             sb = new StringBuilder();
