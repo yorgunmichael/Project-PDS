@@ -181,7 +181,7 @@ public class BackendService {
                 e.printStackTrace();
             }
             String request = di.readUTF();
-            logger.info(request + "envoie");
+            logger.info(request);
             ObjectMapper mapper = new ObjectMapper(new JsonFactory());
 
             Map<String, String> map = mapper.readValue(request.split("@")[1], new TypeReference<Map<String, String>>() {
