@@ -4,24 +4,25 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.Properties;
 
-public class  DataSource {
+public final class DataSource {
 
-    private static JDBCConnectionPool pool;
+    private static JDBCConnectionPool pool = new JDBCConnectionPool();
+    private static DataSource instance;
 
-    public DataSource(int size, Properties prop) {
-        try {
-            pool = new JDBCConnectionPool(prop);
-            pool.turnConnection(size);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static DataSource getInstance() {
+        if (instance == null) {
+            instance = new DataSource();
         }
-    }
-    public static Connection getConnection() {
-        return pool.retrieveConnection();
+        return instance;
     }
 
-    public static void addConnection(Connection con) {
-        pool.removeConnection(con);
+
+    public static Connection giveConnection() {
+        return pool.giveConnection();
+    }
+
+    public static void retrieveConnection(Connection con) {
+        pool.retrieveConnection(con);
     }
 
     public static void closeAllConnection() {

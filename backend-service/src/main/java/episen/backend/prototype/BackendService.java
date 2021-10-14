@@ -29,18 +29,18 @@ public class BackendService {
     private static final Logger logger = LoggerFactory.getLogger(BackendService.class.getName());
     private static DataSource dataSource;
 
+
     public BackendService() {
     }
 
     public static void main(String[] args) throws IOException {
-        Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream("/usr/local/newera/resources/conf.properties")) {
-            props.load(fis);
-        }
+
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         PropertiesClass yamlProps = mapper.readValue(new File("/usr/local/newera/resources/config.yaml"), PropertiesClass.class);
         int maxCo = yamlProps.getMaxCo();
-        dataSource = new DataSource(maxCo, props);
+        logger.info("1111");
+        dataSource = DataSource.getInstance();
+        logger.info("2222222");
         try {
             final Options options = new Options();
             final Option mode = Option.builder().longOpt("mode").hasArg().argName("mode").build();
@@ -59,24 +59,47 @@ public class BackendService {
                 } else if (requestmode.contains("crud")) {
                     crud();
                 } else if (requestmode.contains("overload")) {
-                    pooloverload(3, props);
+                    pooloverload();
                 }
 
             }
 
-        } catch (ParseException | SQLException | InterruptedException e) {
+        } catch (ParseException | SQLException e) {
             e.printStackTrace();
         }
 
 
     }
 
-    private static void pooloverload(int nbCo, Properties props) throws InterruptedException {
-        dataSource = new DataSource(nbCo, props);
-        while (true) {
-            sleep(2000);
-            dataSource.getConnection();
+    private static void pooloverload() {
+        logger.info("débute start");
+
+        ClientThread c1 = new ClientThread();
+        ClientThread c2 = new ClientThread();
+        ClientThread c3 = new ClientThread();
+        ClientThread c4 = new ClientThread();
+        ClientThread c5 = new ClientThread();
+        ClientThread c6 = new ClientThread();
+
+        c1.start();
+        c2.start();
+        c3.start();
+        c4.start();
+        c5.start();
+        c6.start();
+        try {
+            c1.join();
+            c2.join();
+            c3.join();
+            c4.join();
+            c5.join();
+            c6.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+
+
     }
 
 
@@ -108,7 +131,7 @@ public class BackendService {
             Map<String, String> map = mapper.readValue(request.split("@")[1], new TypeReference<Map<String, String>>() {
             });
             String req = request.split("@")[0];
-            Connection co = dataSource.getConnection();
+            Connection co = dataSource.giveConnection();
             if (req.contains("Etudiant") & crud_op.contains("insert")) {
                 ds.writeUTF(crud_insert(co, map).toString());
                 logger.info("Exécution insert");
@@ -119,7 +142,9 @@ public class BackendService {
             } else if (req.contains("Etudiant") & crud_op.equals("read")) {
                 ds.writeUTF(crud_read(co, map).toString());
             }
-            dataSource.addConnection(co);
+            dataSource.retrieveConnection(co);
+
+
             co.close();
         }
 
@@ -131,15 +156,15 @@ public class BackendService {
         try {
             String sql = "select s.name, first_name, old\n" +
                     "from student s\n" +
-                    "Where s.name = '"+map.get("nom")+ "'";
+                    "Where s.name = '" + map.get("nom") + "'";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             System.out.println(sql);
 
             sb = new StringBuilder();
             while (rs.next()) {
-                sb.append("nom: "+rs.getString(1) + " ");
-                sb.append("prenom: "+rs.getString(2) + " ");
-                sb.append("age: "+rs.getString(3) + " ans");
+                sb.append("nom: " + rs.getString(1) + " ");
+                sb.append("prenom: " + rs.getString(2) + " ");
+                sb.append("age: " + rs.getString(3) + " ans");
             }
 
 
@@ -196,6 +221,18 @@ public class BackendService {
                 ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
             }
             if (request.split("@")[0].equals("Etudiant4")) {
+                ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
+            }
+            if (request.split("@")[0].equals("Etudiant5")) {
+                ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
+            }
+            if (request.split("@")[0].equals("Etudiant6")) {
+                ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
+            }
+            if (request.split("@")[0].equals("Etudiant7")) {
+                ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
+            }
+            if (request.split("@")[0].equals("Etudiant22")) {
                 ds.writeUTF("Bonjour " + map.get("nom") + " " + map.get("prenom") + " vous avez " + map.get("age") + " ans");
             }
         }

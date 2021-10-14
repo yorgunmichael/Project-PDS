@@ -4,6 +4,7 @@ import episen.backend.prototype.BackendService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,14 +19,22 @@ public class JDBCConnectionPool {
     private static ArrayList<Connection> myConnection = new ArrayList<>();
     private Properties props;
 
-    public JDBCConnectionPool(Properties props) throws IOException {
-        this.props = props;
+    public JDBCConnectionPool()  {
+         props = new Properties();
+        try (FileInputStream fis = new FileInputStream("/usr/local/newera/resources/conf.properties")) {
+            props.load(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             Class.forName(props.getProperty("jdbc.driver"));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        this.turnConnection();
     }
+
+
 
     private Connection connectionFactory() {
         Connection con = null;
@@ -41,19 +50,20 @@ public class JDBCConnectionPool {
         return con;
     }
 
-    public void turnConnection(int size) {
+    public void turnConnection() {
+        int size = 5;
         logger.info("The size of the pool is : " + size);
         for (int i = 0; i < size; i++) {
             myConnection.add(connectionFactory());
         }
     }
 
-    public void removeConnection(Connection con) {
+    public void retrieveConnection(Connection con) {
         logger.info("a connection is given back to the pool");
         myConnection.add(con);
     }
 
-    public Connection retrieveConnection() {
+    public Connection giveConnection() {
         if (myConnection.size() == 0) {
             try {
                 throw new Exception("No connection available! The pool is overload !");
@@ -63,7 +73,7 @@ public class JDBCConnectionPool {
             }
         }
         logger.info("Giving a connection");
-        logger.info(myConnection.size() + " connection available");
+        logger.info(myConnection.size() + "connection available");
         Connection con = myConnection.remove(myConnection.size() - 1);
         logger.info(myConnection.size() + " left");
         return con;

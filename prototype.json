@@ -14,7 +14,7 @@
     "prenom": "Claire",
     "age": "27"
   },
-  "Etudiant2maj": {
+  "Etudiant22": {
     "nom": "Cramer",
     "prenom": "Jordan",
     "age": "25"
@@ -29,9 +29,19 @@
     "prenom": "Jackson",
     "age": "23"
   },
+  "Etudiant55": {
+    "nom": "Robert",
+    "prenom": "Wikerson",
+    "age": "36"
+  },
   "Etudiant6": {
     "nom": "Robert",
     "prenom": "Jean",
     "age": "35"
+  },
+  "Etudiant7": {
+    "nom": "Marc",
+    "prenom": "Gilbert",
+    "age": "38"
   }
 }

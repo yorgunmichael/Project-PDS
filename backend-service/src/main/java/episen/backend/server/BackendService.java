@@ -37,7 +37,7 @@ public class BackendService {
         int maxCo = yamlProps.getMaxCo();
 
 
-        DataSource ds = new DataSource(maxCo,props);
+        DataSource ds = DataSource.getInstance();
 
 
         Options options = new Options();
@@ -87,7 +87,7 @@ public class BackendService {
 
         if(cmd.hasOption("sqlReq")){
             String request =cmd.getOptionValue("sqlReq");
-            Connection con = ds.getConnection();;
+            Connection con = ds.giveConnection();;
             //logger.info(request);
             try(Statement stm= con.createStatement();
                 ResultSet result = stm.executeQuery(request)){
@@ -107,7 +107,7 @@ public class BackendService {
                 logger.error("Error with executing to db : " +e.getMessage());
             }
             finally {
-                ds.addConnection(con);
+                ds.retrieveConnection(con);
             }
         }
         logger.info(loggerInfo);
@@ -118,7 +118,7 @@ public class BackendService {
     }
 
     private static void executeSqlRequest(DataSource ds, String sqlReq){
-        Connection con = ds.getConnection();
+        Connection con = ds.giveConnection();
         try(Statement stm = con.createStatement(); ResultSet result = stm.executeQuery(sqlReq)){
             stm.execute(sqlReq);
             ResultSetMetaData rsmd = result.getMetaData();
@@ -136,7 +136,7 @@ public class BackendService {
             logger.error("Error with executing to db : " +e.getMessage());
         }
         finally {
-            ds.addConnection(con);
+            ds.retrieveConnection(con);
         }
 
     }
