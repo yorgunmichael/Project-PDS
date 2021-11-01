@@ -18,7 +18,6 @@ public class ClientThread extends Thread {
     public void run() {
         getSendd("Etudiant1", "read");
 
-
     }
 
 

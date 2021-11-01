@@ -14,6 +14,7 @@ import static client.Client.getSend;
 import static client.Client.map;
 
 public class Gestion extends JPanel implements MouseListener {
+    Graphics g;
     public Gestion() {
         setPreferredSize(new Dimension(750, 750));
         this.addMouseListener(this);
@@ -21,6 +22,7 @@ public class Gestion extends JPanel implements MouseListener {
 
 
     public void paint(Graphics g) {
+        this.g = g;
         URL imgURL = Thread.currentThread().getContextClassLoader().getResource("planbureau.jpg");
         BufferedImage map;
         try {
@@ -70,16 +72,7 @@ public class Gestion extends JPanel implements MouseListener {
                 currentEquipment = ImageIO.read(imgURL);
                 g.drawImage(currentEquipment, Integer.valueOf(x), Integer.valueOf(y), 50, 50, null);
             } else {
-                map.get("requestEquipment").put("id_localisation", id_localisation);
-                String requestEquipment = getSend("requestEquipment");
-                String[] answersrequestEquipment = requestEquipment.split("@");
-                for (String b : answersrequestEquipment) {
-                    if (b.contains("@")) {
-                        b.replace("@", "");
-                    }
-                }
-
-                InitialDraw(x, y);
+                InitialDraw(x, y, g);
             }
 
         } catch (Exception e) {
@@ -87,7 +80,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
     }
 
-    private void InitialDraw(String x, String y) {
+    private void InitialDraw(String x, String y,Graphics g) {
 
         String id_room = WindowsMapping.getId_room();
         System.out.println(id_room + "id_room");
@@ -119,17 +112,10 @@ public class Gestion extends JPanel implements MouseListener {
         String status = answersStatus[0];
         System.out.println(status + "status");
 
-        if (status.equals("Actif")) {
-            status = "Inactif";
-
-        } else {
-            status = "Actif";
-        }
-
-        activeOrInactive(name_equipment, status, x, y);
+        activeOrInactive(name_equipment, status, x, y, g);
     }
 
-    private void activeOrInactive(String name_equipment, String status, String x, String y) {
+    private void activeOrInactive(String name_equipment, String status, String x, String y, Graphics g) {
 
         URL mapUrl = null;
 
@@ -313,7 +299,7 @@ public class Gestion extends JPanel implements MouseListener {
                 }
             }
 
-            activeOrInactive(name_equipment, status, x, y);
+            activeOrInactive(name_equipment, status, x, y, g);
 
         }
 
@@ -323,7 +309,7 @@ public class Gestion extends JPanel implements MouseListener {
 
 
         JPanel panel = new JPanel();
-        JLabel label = new JLabel("Quel équipement voulez vous placer?");
+        JLabel label = new JLabel("Quel équipement voulez vous placer? ");
         panel.add(label);
 
         String id_room = WindowsMapping.getId_room();
@@ -357,7 +343,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
         String name_equipment = answersUpdate[0];
 
-        int responseScreen = JOptionPane.showConfirmDialog(null, "Voulez vous supprimer l'équipement" + name_equipment);
+        int responseScreen = JOptionPane.showConfirmDialog(null, "Voulez vous supprimer l'équipement " + name_equipment);
         if (responseScreen == JOptionPane.YES_OPTION) {
 
             String availablity = "true";
