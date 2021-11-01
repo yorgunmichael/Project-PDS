@@ -1,5 +1,8 @@
 package IhmMapping;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -14,6 +17,7 @@ import static client.Client.getSend;
 import static client.Client.map;
 
 public class Gestion extends JPanel implements MouseListener {
+    private final static Logger log = LoggerFactory.getLogger(Gestion.class.getName());
     Graphics g;
     public Gestion() {
         setPreferredSize(new Dimension(750, 750));
@@ -65,7 +69,8 @@ public class Gestion extends JPanel implements MouseListener {
                 if (b.contains("@")) {
                     b.replace("@", "");
                 }
-                System.out.println(b);
+
+                log.info(b);
             }
             if (answers[0].contains("t")) {
                 imgURL = Thread.currentThread().getContextClassLoader().getResource("localisation.png");
@@ -83,7 +88,7 @@ public class Gestion extends JPanel implements MouseListener {
     private void InitialDraw(String x, String y,Graphics g) {
 
         String id_room = WindowsMapping.getId_room();
-        System.out.println(id_room + "id_room");
+        log.info(id_room + "id_room");
 
 
         map.get("requestGetEquip").put("id_room", id_room);
@@ -98,7 +103,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
 
         String name_equipment = answersEquipment[0];
-        System.out.println(name_equipment + "name_equipment");
+        log.info(name_equipment + "name_equipment");
 
         map.get("requestGetStatusEquipment").put("name_equipment", name_equipment);
         String requestGetStatusEquipment = getSend("requestGetStatusEquipment");
@@ -110,7 +115,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
 
         String status = answersStatus[0];
-        System.out.println(status + "status");
+        log.info(status + "status");
 
         activeOrInactive(name_equipment, status, x, y, g);
     }
@@ -149,7 +154,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
         try {
             Image currentEquipment = ImageIO.read(mapUrl);
-            getGraphics().drawImage(currentEquipment, Integer.valueOf(x), Integer.valueOf(y), 50, 50, null);
+            g.drawImage(currentEquipment, Integer.valueOf(x), Integer.valueOf(y), 50, 50, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -185,7 +190,7 @@ public class Gestion extends JPanel implements MouseListener {
 
         if (e.getX() >= 195 & e.getX() <= 245 & e.getY() >= 460 & e.getY() <= 510) {
             if ((e.getButton() == MouseEvent.BUTTON3) && verifyStatus(getLocalisation(id_room, "195", "460")).contains("f")) {
-                System.out.println("change status");
+                log.info("change status");
                 changeStatus("195", "460");
             } else {
                 placeOrDelete("195", "460");
@@ -248,7 +253,7 @@ public class Gestion extends JPanel implements MouseListener {
     private void changeStatus(String x, String y) {
 
         String id_room = WindowsMapping.getId_room();
-        System.out.println(id_room + "id_room");
+        log.info(id_room + "id_room");
 
 
         map.get("requestGetEquip").put("id_room", id_room);
@@ -263,7 +268,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
 
         String name_equipment = answersEquipment[0];
-        System.out.println(name_equipment + "name_equipment");
+        log.info(name_equipment + "name_equipment");
 
         map.get("requestGetStatusEquipment").put("name_equipment", name_equipment);
         String requestGetStatusEquipment = getSend("requestGetStatusEquipment");
@@ -275,7 +280,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
 
         String status = answersStatus[0];
-        System.out.println(status + "status");
+        log.info(status + "status");
 
         if (status.equals("Actif")) {
             status = "Inactif";
@@ -318,7 +323,7 @@ public class Gestion extends JPanel implements MouseListener {
         String id_localisation = getLocalisation(id_room, x, y);
         String status = verifyStatus(id_localisation);
 
-        System.out.println("Is empty ? : " + status);
+        log.info("Is empty ? : " + status);
 
 
         if (status.contains("t")) {
@@ -392,7 +397,7 @@ public class Gestion extends JPanel implements MouseListener {
             if (b.contains("@")) {
                 b.replace("@", "");
             }
-            System.out.println(b);
+            log.info(b);
         }
 
         String name_equipment =
@@ -403,7 +408,8 @@ public class Gestion extends JPanel implements MouseListener {
                         null,
                         ListEquipment,
                         ListEquipment[0]);
-        System.out.println((String) name_equipment);
+
+        log.info((String) name_equipment);
         URL mapUrl = null;
 
         if (name_equipment.contains("fenêtre")) {
