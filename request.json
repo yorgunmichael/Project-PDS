@@ -101,6 +101,16 @@
     "positionY": ""
   },
 
+  "requestGetCategoryEquip": {
+    "id_room": "",
+    "positionX": "",
+    "positionY": ""
+},
+
+  "requestChooseEquipment" : {
+    "category" : ""
+  },
+
   "requestVerifyStatus": {
     "id_localisation": ""
   },

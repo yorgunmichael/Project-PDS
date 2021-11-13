@@ -401,7 +401,7 @@ public class GestionRoom extends JPanel implements MouseListener {
                 b.replace("@", "");
             }
 
-            log.info(b);
+            log.info(b + "log1");
         }
 
         String name_equipment =
@@ -413,7 +413,7 @@ public class GestionRoom extends JPanel implements MouseListener {
                         ListEquipment,
                         ListEquipment[0]);
 
-        log.info((String) name_equipment);
+        log.info((String) name_equipment+ "log2");
         URL mapUrl = null;
 
         if (name_equipment.contains("fenêtre")) {

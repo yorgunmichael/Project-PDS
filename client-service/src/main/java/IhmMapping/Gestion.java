@@ -19,6 +19,7 @@ import static client.Client.map;
 public class Gestion extends JPanel implements MouseListener {
     private final static Logger log = LoggerFactory.getLogger(Gestion.class.getName());
     Graphics g;
+
     public Gestion() {
         setPreferredSize(new Dimension(750, 750));
         this.addMouseListener(this);
@@ -85,7 +86,7 @@ public class Gestion extends JPanel implements MouseListener {
         }
     }
 
-    private void InitialDraw(String x, String y,Graphics g) {
+    private void InitialDraw(String x, String y, Graphics g) {
 
         String id_room = WindowsMapping.getId_room();
         log.info(id_room + "id_room");
@@ -390,15 +391,45 @@ public class Gestion extends JPanel implements MouseListener {
     }
 
     private void place(String id_localisation, String x, String y) {
-        map.get("requestGetEquipment");
-        String responses = getSend("requestGetEquipment");
-        String[] ListEquipment = responses.split("@");
-        for (String b : ListEquipment) {
+
+        String id_room = WindowsMapping.getId_room();
+
+        map.get("requestGetCategoryEquip").put("id_room", id_room);
+        map.get("requestGetCategoryEquip").put("positionX", x);
+        map.get("requestGetCategoryEquip").put("positionY", y);
+        String requestGetCategoryEquip = getSend("requestGetCategoryEquip");
+        String[] answersCategory = requestGetCategoryEquip.split("@");
+        for (String b : answersCategory) {
             if (b.contains("@")) {
                 b.replace("@", "");
             }
             log.info(b);
         }
+
+        String category = answersCategory[0];
+        log.info(answersCategory+ "category");
+        log.info("quuuuuuuuuuuuu");
+
+        map.get("requestChooseEquipment").put("category", category);
+        String requestChooseEquipment = getSend("requestChooseEquipment");
+        String[] ListEquipment = requestChooseEquipment.split("@");
+        for (String b : ListEquipment) {
+            if (b.contains("@")) {
+                b.replace("@", "");
+            }
+            log.info(b + "liste équipement");
+        }
+
+
+//        map.get("requestGetEquipment");
+//        String responses = getSend("requestGetEquipment");
+//        String[] ListEquipment = responses.split("@");
+//        for (String b : ListEquipment) {
+//            if (b.contains("@")) {
+//                b.replace("@", "");
+//            }
+//            log.info(b);
+//        }
 
         String name_equipment =
                 (String) JOptionPane.showInputDialog(null,
