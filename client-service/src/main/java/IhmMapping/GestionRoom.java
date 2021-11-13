@@ -393,15 +393,32 @@ public class GestionRoom extends JPanel implements MouseListener {
     }
 
     private void place(String id_localisation, String x, String y) {
-        map.get("requestGetEquipment");
-        String responses = getSend("requestGetEquipment");
-        String[] ListEquipment = responses.split("@");
+        String id_room = WindowsMapping.getId_room();
+
+        map.get("requestGetCategoryEquip").put("id_room", id_room);
+        map.get("requestGetCategoryEquip").put("positionX", x);
+        map.get("requestGetCategoryEquip").put("positionY", y);
+        String requestGetCategoryEquip = getSend("requestGetCategoryEquip");
+        String[] answersCategory = requestGetCategoryEquip.split("@");
+        for (String b : answersCategory) {
+            if (b.contains("@")) {
+                b.replace("@", "");
+            }
+            log.info(b);
+        }
+
+        String category = answersCategory[0];
+        log.info(answersCategory+ "category");
+        log.info("quuuuuuuuuuuuu");
+
+        map.get("requestChooseEquipment").put("category", category);
+        String requestChooseEquipment = getSend("requestChooseEquipment");
+        String[] ListEquipment = requestChooseEquipment.split("@");
         for (String b : ListEquipment) {
             if (b.contains("@")) {
                 b.replace("@", "");
             }
-
-            log.info(b + "log1");
+            log.info(b);
         }
 
         String name_equipment =
@@ -413,7 +430,7 @@ public class GestionRoom extends JPanel implements MouseListener {
                         ListEquipment,
                         ListEquipment[0]);
 
-        log.info((String) name_equipment+ "log2");
+        log.info((String) name_equipment);
         URL mapUrl = null;
 
         if (name_equipment.contains("fenêtre")) {

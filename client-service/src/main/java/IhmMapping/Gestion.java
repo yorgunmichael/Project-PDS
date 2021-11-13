@@ -417,19 +417,10 @@ public class Gestion extends JPanel implements MouseListener {
             if (b.contains("@")) {
                 b.replace("@", "");
             }
-            log.info(b + "liste équipement");
+            log.info(b);
         }
 
 
-//        map.get("requestGetEquipment");
-//        String responses = getSend("requestGetEquipment");
-//        String[] ListEquipment = responses.split("@");
-//        for (String b : ListEquipment) {
-//            if (b.contains("@")) {
-//                b.replace("@", "");
-//            }
-//            log.info(b);
-//        }
 
         String name_equipment =
                 (String) JOptionPane.showInputDialog(null,

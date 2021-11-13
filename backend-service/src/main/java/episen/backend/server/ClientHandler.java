@@ -106,7 +106,7 @@ public class ClientHandler implements Runnable {
             if (request.split("@")[0].equals("requestSensorIsEmpty")) {
                 ds.writeUTF(requestSensorIsEmpty(connection, map).toString());
             }
-            if (request.split("@")[0].equals("comboxCompany")){
+            if (request.split("@")[0].equals("comboxCompany")) {
                 ds.writeUTF(comboxNameCompany(connection, map).toString());
             }
             if (request.split("@")[0].equals("requestUpdateWindows")) {
@@ -153,14 +153,8 @@ public class ClientHandler implements Runnable {
                 ds.writeUTF(requestGetCategoryEquip(connection, map).toString());
             }
             if (request.split("@")[0].equals("requestChooseEquipment")) {
-                ds.writeUTF(  requestChooseEquipment(connection, map).toString());
+                ds.writeUTF(requestChooseEquipment(connection, map).toString());
             }
-
-
-
-
-
-
 
 
 /******************************************starting condition for indicators***********************/
@@ -266,47 +260,45 @@ public class ClientHandler implements Runnable {
             }
 
 
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /*************** starting method request for building indicators*********************/
 
     private String getAllfloor(Connection connection, Map<String, String> map) {
         String value = "";
         try {
-            String sql ="select count(name_floor) from floor " +
+            String sql = "select count(name_floor) from floor " +
                     "inner join building on floor.id_building = building.id_building " +
-                    "where building_name='"+ map.get("building_name") + "'";
+                    "where building_name='" + map.get("building_name") + "'";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 value = rs.getString(1);
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return value;
     }
 
     private String equipmentBuilding(Connection connection, Map<String, String> map) {
-        String value ="";
+        String value = "";
         try {
-            String sql ="select count(position_windows) from room inner join floor " +
+            String sql = "select count(position_windows) from room inner join floor " +
                     "on floor.id_floor = room.id_floor inner join building on " +
                     "building.id_building = floor.id_building where " +
-                    "position_windows = true and building_name = '"+ map.get("building_name") + "'";
+                    "position_windows = true and building_name = '" + map.get("building_name") + "'";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 value = rs.getString(1);
 
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return value;
@@ -315,22 +307,22 @@ public class ClientHandler implements Runnable {
     private Integer objectBuilding(Connection connection, Map<String, String> map) {
         int val1 = 0;
         try {
-            String sql ="select sum(n) from (select count(name_room) n from room inner join floor " +
+            String sql = "select sum(n) from (select count(name_room) n from room inner join floor " +
                     "on floor.id_floor = room.id_floor inner join building on " +
                     "building.id_building = floor.id_building where " +
-                    "position_plug = true and building_name = '"+map.get("building_name")+"' " +
+                    "position_plug = true and building_name = '" + map.get("building_name") + "' " +
                     "union " +
                     "select count(name_room) from room inner join floor " +
                     "on floor.id_floor = room.id_floor inner join building on " +
                     "building.id_building = floor.id_building where " +
-                    "position_screen = true and building_name = '"+map.get("building_name")+"' ) as res";
+                    "position_screen = true and building_name = '" + map.get("building_name") + "' ) as res";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 val1 = rs.getInt(1);
-            log.info("je suis val1 "+val1);
-        }catch (SQLException e) {
+            log.info("je suis val1 " + val1);
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return val1;
@@ -340,37 +332,37 @@ public class ClientHandler implements Runnable {
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumFractionDigits(2);
         double d = 0;
-        double d2 =0.0;
-        String value ="";
+        double d2 = 0.0;
+        String value = "";
 
         try {
             String sql = "select  count(name_room) from room inner join floor " +
                     "on room.id_floor = floor.id_floor inner join building " +
                     "on floor.id_building = building.id_building " +
-                    "where status = 'booked' and building_name = '"+map.get("building_name")+"'";
+                    "where status = 'booked' and building_name = '" + map.get("building_name") + "'";
 
-            String sql2 ="select count(name_room) from room inner join floor " +
+            String sql2 = "select count(name_room) from room inner join floor " +
                     "on room.id_floor = floor.id_floor inner join building " +
                     "on floor.id_building = building.id_building " +
-                    "where building_name = '"+map.get("building_name")+"'";
+                    "where building_name = '" + map.get("building_name") + "'";
 
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 d = rs.getDouble(1);
-            log.info("je suis d "+d);
+            log.info("je suis d " + d);
             ResultSet rs2 = connection.createStatement().executeQuery(sql2);
             while (rs2.next())
                 d2 = rs2.getDouble(1);
-            log.info("je suis d2 "+ d2);
-            value = format.format((d/d2) * 100);
-            log.info("je suis val "+value);
+            log.info("je suis d2 " + d2);
+            value = format.format((d / d2) * 100);
+            log.info("je suis val " + value);
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
-        return value+"%";
+        return value + "%";
     }
 
     private String energyBuilding(Connection connection, Map<String, String> map) {
@@ -378,16 +370,16 @@ public class ClientHandler implements Runnable {
         format.setMinimumFractionDigits(2);
         String value = "";
         double resp = 0.0;
-        try{
+        try {
             String sql = "select energy from building where " +
-                    "building_name = '"+ map.get("building_name") + "'";
+                    "building_name = '" + map.get("building_name") + "'";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 resp = rs.getDouble(1);
             value = format.format(resp);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return value;
@@ -400,14 +392,14 @@ public class ClientHandler implements Runnable {
             String sql = "select count(position_sensor) from room inner join floor " +
                     "on floor.id_floor = room.id_floor inner join building on " +
                     "building.id_building = floor.id_building where " +
-                    "position_sensor = true and building_name = '"+ map.get("building_name") + "'";
+                    "position_sensor = true and building_name = '" + map.get("building_name") + "'";
 
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 value = rs.getString(1);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return value;
@@ -422,12 +414,12 @@ public class ClientHandler implements Runnable {
                     "on room.id_location = location.id_location inner join floor " +
                     "on floor.id_floor = room.id_floor inner join building " +
                     "on building.id_building = floor.id_building " +
-                    "where building_name = '"+ map.get("building_name") +"'";
+                    "where building_name = '" + map.get("building_name") + "'";
 
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 value = rs.getInt(1);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
         }
         return value;
@@ -438,7 +430,7 @@ public class ClientHandler implements Runnable {
 
     private String usedBatiment(Connection connection, Map<String, String> map) {
         String value = "";
-        try{
+        try {
             String sql = "select distinct building_name from building inner join floor " +
                     "on building.id_building = floor.id_building inner join room " +
                     "on floor.id_floor = room.id_floor inner join location on " +
@@ -449,26 +441,27 @@ public class ClientHandler implements Runnable {
             while (rs.next())
                 value = rs.getString(1);
             log.info(value);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return value;
 
     }
+
     private Integer equipmentCompany(Connection connection, Map<String, String> map) {
         int value = 0;
-        try{
+        try {
             String sql = "select count(position_windows) from room inner join " +
                     "location on room.id_location = location.id_location " +
                     "INNER join company on location.company_id = company.company_id where " +
-                    "position_windows = true and company_name = '"+map.get("company_name")+"'";
+                    "position_windows = true and company_name = '" + map.get("company_name") + "'";
 
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 value = rs.getInt(1);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
         }
         return value;
@@ -476,18 +469,18 @@ public class ClientHandler implements Runnable {
 
     private String sensorCompany(Connection connection, Map<String, String> map) {
         String value = "";
-        try{
+        try {
             String sql = "select count(position_sensor) from room inner join " +
                     "location on room.id_location = location.id_location " +
                     "INNER join company on location.company_id = company.company_id " +
-                    "where position_sensor = true and company_name = '"+map.get("company_name")+"'";
+                    "where position_sensor = true and company_name = '" + map.get("company_name") + "'";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 value = rs.getString(1);
             log.info(value);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return value;
@@ -496,21 +489,21 @@ public class ClientHandler implements Runnable {
 
     private Integer objectCompany(Connection connection, Map<String, String> map) {
         int value = 0;
-        try{
+        try {
             String sql = "select sum(n) from ( select count(name_room) n from room inner join " +
                     "location on room.id_location = location.id_location " +
                     "INNER join company on location.company_id = company.company_id " +
-                    "where position_screen = true and company_name = '"+map.get("company_name")+"' " +
+                    "where position_screen = true and company_name = '" + map.get("company_name") + "' " +
                     "union " +
                     "select count(name_room) from room inner join " +
                     "location on room.id_location = location.id_location " +
                     "INNER join company on location.company_id = company.company_id " +
-                    "where position_plug = true and company_name = '"+map.get("company_name")+"') as req";
+                    "where position_plug = true and company_name = '" + map.get("company_name") + "') as req";
 
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 value = rs.getInt(1);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
         }
         return value;
@@ -518,21 +511,23 @@ public class ClientHandler implements Runnable {
 
 /** end of company indicators**/
 
-    /** information general*/
+    /**
+     * information general
+     */
     private String getEnergy(Connection connection, Map<String, String> map) {
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumFractionDigits(2);
-        String s = "" ;
+        String s = "";
         double d = 0.0;
-        try{
+        try {
             String sql = "select sum(energy) from building";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 d = rs.getDouble(1);
-            s=format.format(d);
-        }catch (SQLException e){
+            s = format.format(d);
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return s;
@@ -540,15 +535,15 @@ public class ClientHandler implements Runnable {
 
     private String getAllCompany(Connection connection, Map<String, String> map) {
         String value = "";
-        try{
+        try {
             String sql = "select count(*) from company where begin_location is not NULL";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
                 value = rs.getString(1);
             log.info(value);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return value;
@@ -559,7 +554,7 @@ public class ClientHandler implements Runnable {
         String value = "";
         String value2 = "";
         String resp = "";
-        try{
+        try {
             String sql = "select count(position_sensor) from room where position_sensor=true ";
             String sql2 = "select count(position_sensor) from room";
             ResultSet rs = connection.createStatement().executeQuery(sql);
@@ -569,10 +564,10 @@ public class ClientHandler implements Runnable {
             while (rs2.next())
                 value2 = rs2.getString(1);
 
-            resp = value+"/"+value2;
-        }catch (SQLException e){
+            resp = value + "/" + value2;
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return resp;
@@ -583,7 +578,7 @@ public class ClientHandler implements Runnable {
         String value = "";
         String value2 = "";
         String resp = "";
-        try{
+        try {
             String sql = "select count(position_windows) from room where position_windows=true";
             String sql2 = "select count(position_windows) from room";
             ResultSet rs = connection.createStatement().executeQuery(sql);
@@ -592,10 +587,10 @@ public class ClientHandler implements Runnable {
             ResultSet rs2 = connection.createStatement().executeQuery(sql2);
             while (rs2.next())
                 value2 = rs2.getString(1);
-            resp = value+"/"+value2;
-        }catch (SQLException e){
+            resp = value + "/" + value2;
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
         return resp;
@@ -607,13 +602,13 @@ public class ClientHandler implements Runnable {
         try {
             String sql = "select sum(m) from " +
                     "(select count(position_screen) m from room " +
-                    "where position_screen=true UNION "+
+                    "where position_screen=true UNION " +
                     "select count(position_plug) FROM room where position_plug=true) as sum";
             ResultSet rs = connection.createStatement().executeQuery(sql);
 
             while (rs.next())
                 load = rs.getInt(1);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
         }
         return load;
@@ -623,30 +618,31 @@ public class ClientHandler implements Runnable {
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumFractionDigits(2);
         double d = 0.0;
-        double d2 =0.0;
-        String value ="";
+        double d2 = 0.0;
+        String value = "";
 
         try {
             String sql = "select count(*) from room where status = 'booked'";
-            String sql2 ="select count(*) from room";
+            String sql2 = "select count(*) from room";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             while (rs.next())
-                d =rs.getDouble(1);
+                d = rs.getDouble(1);
             ResultSet rs2 = connection.createStatement().executeQuery(sql2);
             while (rs2.next())
-                d2 =rs2.getDouble(1);
-            value = format.format((d/d2) * 100);
+                d2 = rs2.getDouble(1);
+            value = format.format((d / d2) * 100);
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("la requête est nulle");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("la valeur est null");
         }
-        return value+"%";
+        return value + "%";
     }
+
     /******************************************* end  of information general*****************************/
     /* for selecting company in to a combobox**/
-    private List<String> comboxNameCompany(Connection connection, Map<String, String> map)  {
+    private List<String> comboxNameCompany(Connection connection, Map<String, String> map) {
         List<String> name = new ArrayList<>();
         try {
             String request = "select company_name from company";
@@ -655,11 +651,12 @@ public class ClientHandler implements Runnable {
                 name.add(rs.getString(1));
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return name;
     }
+
     /* end of combobox**/
     public static StringBuilder requestbuilding(Connection connection, Map<String, String> map) {
 
@@ -698,7 +695,7 @@ public class ClientHandler implements Runnable {
                     "ON room.id_location = location.id_location " +
                     "INNER JOIN company " +
                     "ON company.company_id = location.company_id" +
-                    " WHERE company.company_name = '"+map.get("company_name")+"' AND building.building_name = '"+map.get("building_name")+"'";
+                    " WHERE company.company_name = '" + map.get("company_name") + "' AND building.building_name = '" + map.get("building_name") + "'";
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
             System.out.println(sql);
@@ -1014,7 +1011,7 @@ public class ClientHandler implements Runnable {
         try {
 
             String sql = "SELECT name_equipment FROM equipment" +
-                    "    WHERE availablity = TRUE ORDER BY name_equipment"  ;
+                    "    WHERE availablity = TRUE ORDER BY name_equipment";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             System.out.println(sql);
             sb = new StringBuilder();
@@ -1034,7 +1031,7 @@ public class ClientHandler implements Runnable {
         try {
 
             String sql = "SELECT distinct category FROM localisation " +
-                    "WHERE id_room = "+map.get("id_room")+" "+" AND position_x = "+map.get("positionX")+" "+" AND position_y = "+map.get("positionY")+"";
+                    "WHERE id_room = " + map.get("id_room") + " " + " AND position_x = " + map.get("positionX") + " " + " AND position_y = " + map.get("positionY") + "";
             ResultSet rs = connection.createStatement().executeQuery(sql);
             System.out.println(sql);
             sb = new StringBuilder();
@@ -1052,13 +1049,12 @@ public class ClientHandler implements Runnable {
     public StringBuilder requestChooseEquipment(Connection connection, Map<String, String> map) {
         StringBuilder sb = null;
 
-        System.out.println("je suis dans la r");
 
         try {
 
 
             String sql = "SELECT distinct name_equipment FROM equipment " +
-                    "WHERE availablity = TRUE AND category = '"+map.get("category")+"'"+" "+" ORDER BY name_equipment";
+                    "WHERE availablity = TRUE AND category = '" + map.get("category") + "'" + " " + " ORDER BY name_equipment";
 
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
@@ -1075,15 +1071,14 @@ public class ClientHandler implements Runnable {
     }
 
 
-
     public StringBuilder requestUpdateEquipment(Connection connection, Map<String, String> map) {
         StringBuilder sb = null;
 
         try {
 
             String sql = "UPDATE equipment" +
-                    " set availablity = "+map.get("availablity") +", id_localisation = "+map.get("id_localisation") +", status = '"+map.get("status")+
-                    "' WHERE name_equipment = '"+map.get("name_equipment") +"'" ;
+                    " set availablity = " + map.get("availablity") + ", id_localisation = " + map.get("id_localisation") + ", status = '" + map.get("status") +
+                    "' WHERE name_equipment = '" + map.get("name_equipment") + "'";
 
 
             connection.createStatement().executeUpdate(sql);
@@ -1105,7 +1100,7 @@ public class ClientHandler implements Runnable {
 
             String sql = "SELECT id_localisation" +
                     " FROM localisation " +
-                    "WHERE id_room = "+map.get("id_room")+" "+" AND position_x = "+map.get("positionX")+" "+" AND position_y = "+map.get("positionY")+"";
+                    "WHERE id_room = " + map.get("id_room") + " " + " AND position_x = " + map.get("positionX") + " " + " AND position_y = " + map.get("positionY") + "";
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 
@@ -1126,8 +1121,8 @@ public class ClientHandler implements Runnable {
         try {
 
             String sql = "UPDATE localisation" +
-                    " set empty = "+map.get("empty") +
-                    " WHERE id_localisation = "+map.get("id_localisation")  ;
+                    " set empty = " + map.get("empty") +
+                    " WHERE id_localisation = " + map.get("id_localisation");
 
 
             connection.createStatement().executeUpdate(sql);
@@ -1170,7 +1165,7 @@ public class ClientHandler implements Runnable {
 
             String sql = "SELECT name_equipment" +
                     " FROM equipment " +
-                    "WHERE id_localisation = "+map.get("id_localisation");
+                    "WHERE id_localisation = " + map.get("id_localisation");
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 
@@ -1192,7 +1187,7 @@ public class ClientHandler implements Runnable {
 
             String sql = "SELECT name_equipment" +
                     " FROM equipment " +
-                    "WHERE id_localisation = "+map.get("id_localisation");
+                    "WHERE id_localisation = " + map.get("id_localisation");
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 
@@ -1213,13 +1208,13 @@ public class ClientHandler implements Runnable {
         try {
 
             String sql = "UPDATE equipment" +
-                    " set status = '"+map.get("status")  +
-                    "' WHERE name_equipment = '"+map.get("name_equipment")+"'";
+                    " set status = '" + map.get("status") +
+                    "' WHERE name_equipment = '" + map.get("name_equipment") + "'";
 
 
             System.out.println(sql);
             connection.createStatement().executeUpdate(sql);
-           // System.out.println(sql);
+            // System.out.println(sql);
             sb = new StringBuilder();
             sb.append("Update done");
 
@@ -1237,7 +1232,7 @@ public class ClientHandler implements Runnable {
 
             String sql = "SELECT status" +
                     " FROM equipment " +
-                    " WHERE name_equipment = '" +map.get("name_equipment") +"'" ;
+                    " WHERE name_equipment = '" + map.get("name_equipment") + "'";
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 
@@ -1260,7 +1255,7 @@ public class ClientHandler implements Runnable {
             String sql = "SELECT name_equipment " +
                     "FROM equipment INNER JOIN localisation" +
                     " ON equipment.id_localisation = localisation.id_localisation" +
-                    " WHERE id_room = "+map.get("id_room")+" "+" AND position_x = "+map.get("positionX")+" "+" AND position_y = "+map.get("positionY")+"";
+                    " WHERE id_room = " + map.get("id_room") + " " + " AND position_x = " + map.get("positionX") + " " + " AND position_y = " + map.get("positionY") + "";
             System.out.println(sql);
             ResultSet rs = connection.createStatement().executeQuery(sql);
 
@@ -1274,7 +1269,6 @@ public class ClientHandler implements Runnable {
         }
         return sb;
     }
-
 
 
     // LOCATION
@@ -1352,7 +1346,7 @@ public class ClientHandler implements Runnable {
         String str = "";
         try {
 
-            String sql = "SELECT distinct(f.name_floor) FROM floor f"+
+            String sql = "SELECT distinct(f.name_floor) FROM floor f" +
                     " inner join building b on b.id_building = f.id_building" +
                     " where b.building_name='" + map.get("rl_building") + "'" +
                     " order by f.name_floor";
@@ -1395,7 +1389,7 @@ public class ClientHandler implements Runnable {
         int nb = 0;
         try {
 
-            String sql = "SELECT count(r.id_room) from room r"+
+            String sql = "SELECT count(r.id_room) from room r" +
                     " inner join floor f on r.id_floor = f.id_floor" +
                     " inner join building b on b.id_building = f.id_building" +
                     "    WHERE b.building_name = '" + map.get("rl_building") + "'" +
@@ -1420,7 +1414,7 @@ public class ClientHandler implements Runnable {
         String str = "";
         try {
 
-            String sql = "SELECT status from room r"+
+            String sql = "SELECT status from room r" +
                     " inner join floor f on r.id_floor = f.id_floor" +
                     " inner join building b on b.id_building = f.id_building" +
                     "    WHERE b.building_name = '" + map.get("rl_building") + "'" +
@@ -1445,8 +1439,8 @@ public class ClientHandler implements Runnable {
         String[] f = map.get("rl_floor_to_set").split("-");
         int index = 0;
         try {
-            for(int i = 0; i < 10; i++) {
-                index = i+1;
+            for (int i = 0; i < 10; i++) {
+                index = i + 1;
                 String sql = "update room as r" +
                         " set status = '" + f[i] + "'" +
                         " from floor as f" +
@@ -1472,9 +1466,9 @@ public class ClientHandler implements Runnable {
         String str = "";
         try {
 
-            String sql = "select id_room, name_floor from room r"+
-                    " inner join floor f on r.id_floor = f.id_floor"+
-                    " inner join building b on b.id_building = f.id_building"+
+            String sql = "select id_room, name_floor from room r" +
+                    " inner join floor f on r.id_floor = f.id_floor" +
+                    " inner join building b on b.id_building = f.id_building" +
                     " WHERE b.building_name = '" + map.get("rl_building") + "' and r.status='free' " +
                     " order by id_room" +
                     " LIMIT " + map.get("rl_nb_loc");
@@ -1498,7 +1492,7 @@ public class ClientHandler implements Runnable {
         String str = "";
         String[] f = map.get("rl_resa").split("-");
         try {
-            for(int i = 0; i < f.length; i++) {
+            for (int i = 0; i < f.length; i++) {
                 String idRoom = f[i].split("//")[0];
                 String sql = "update room" +
                         " set position_sensor = 't'," +
@@ -1532,7 +1526,7 @@ public class ClientHandler implements Runnable {
             }
 
             String sql2 = "insert into company (company_id, company_name, begin_location) " +
-                    "values (" + idCompany+1 +
+                    "values (" + idCompany + 1 +
                     ",'" + map.get("rl_company_name") + "',now());";
             connection.createStatement().executeUpdate(sql2);
             System.out.println(sql2);
